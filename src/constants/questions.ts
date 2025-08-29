@@ -26,7 +26,7 @@ export const questions: Question[] = [
     type: "text",
     category: "History",
     question: "Who was the first president of the USA?",
-    answer: "George Washington",
+    answer: ["George Washington", "George W.", "G. Washington"],
   },
   {
     type: "image",

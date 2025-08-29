@@ -17,8 +17,9 @@
         score.update((n) => n + 1);
     } else {
       if (
-        userInput.trim().toLocaleLowerCase() ===
-        question.answer.trim().toLocaleLowerCase()
+        question.answer
+          .map((ans: string) => ans.trim().toLocaleLowerCase())
+          .includes(userInput.trim().toLocaleLowerCase())
       ) {
         score.update((n) => n + 1);
       }
@@ -96,10 +97,10 @@
     align-items: center;
     gap: 1rem;
     margin-bottom: 1rem;
+  }
 
-    input {
-      font-size: 1.5rem;
-    }
+  input {
+    font-size: 1.5rem;
   }
   .question-options {
     display: grid;
