@@ -25,19 +25,19 @@ export function startQuiz(category: Category, allQuestions: Question[]) {
 }
 
 export function resetTimer() {
-  timeLeft.set(15);
+  // timeLeft.set(15);
 
-  if (timerInterval) clearInterval(timerInterval);
+  // if (timerInterval) clearInterval(timerInterval);
 
-  timerInterval = setInterval(() => {
-    timeLeft.update(n => {
-      if (n <= 1) {
-        nextQuestion();
-        return MAX_TIME;
-      }
-      return n - 1;
-    });
-  }, ONE_SECOND_IN_MS);
+  // timerInterval = setInterval(() => {
+  //   timeLeft.update(n => {
+  //     if (n <= 1) {
+  //       nextQuestion();
+  //       return MAX_TIME;
+  //     }
+  //     return n - 1;
+  //   });
+  // }, ONE_SECOND_IN_MS);
 }
 
 export function nextQuestion() {

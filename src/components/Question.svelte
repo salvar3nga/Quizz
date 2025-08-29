@@ -9,13 +9,21 @@
   import { currentCategory } from "../store/quizStore";
 
   let question = $currentQuestions[$currentIndex];
-  let category = $currentCategory;
+  let userInput = "";
 
-  function selectAnswer(index: number) {
-    if (index === question.answer) {
-      score.update((n) => n + 1);
+  function checkAnswer(selectedAnswer?: number) {
+    if (question.type === "mcq") {
+      if (String(selectedAnswer) === question.answer)
+        score.update((n) => n + 1);
+    } else {
+      if (
+        userInput.trim().toLocaleLowerCase() ===
+        question.answer.trim().toLocaleLowerCase()
+      ) {
+        score.update((n) => n + 1);
+      }
     }
-
+    userInput = "";
     nextQuestion();
   }
 
@@ -34,11 +42,28 @@
     <div class="timer-container">
       <div class="timer-bar" style="width: {($timeLeft / 15) * 100}%"></div>
     </div>
-    <div class="question-options">
-      {#each question.options as option, i}
-        <button on:click={() => selectAnswer(i)}>{option}</button>
-      {/each}
-    </div>
+    {#if question.type === "mcq"}
+      <div class="question-options">
+        {#each question.options as option, i}
+          <button on:click={() => checkAnswer(i)}>{option}</button>
+        {/each}
+      </div>
+    {:else if question.type === "text"}
+      <div>
+        <input bind:value={userInput} placeholder="Type your answer..." />
+        <button on:click={() => checkAnswer()}>Submit</button>
+      </div>
+    {:else if question.type === "image"}
+      <div>
+        <img
+          src={question.imageUrl}
+          alt=""
+          class="w-64 h-40 object-cover rounded shadow image"
+        />
+        <input bind:value={userInput} placeholder="Your answer..." />
+        <button on:click={() => checkAnswer()}>Submit</button>
+      </div>
+    {/if}
   </div>
 {/if}
 
@@ -55,6 +80,10 @@
       height: 1rem;
       border-radius: 5%;
     }
+  }
+
+  .image {
+    aspect-ratio: 16 / 9;
   }
   .question-options {
     display: grid;
