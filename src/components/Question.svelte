@@ -50,17 +50,25 @@
       </div>
     {:else if question.type === "text"}
       <div>
-        <input bind:value={userInput} placeholder="Type your answer..." />
+        <input
+          bind:value={userInput}
+          on:keydown={(e) => e.key === "Enter" && checkAnswer()}
+          placeholder="Type your answer..."
+        />
         <button on:click={() => checkAnswer()}>Submit</button>
       </div>
     {:else if question.type === "image"}
-      <div>
+      <div class="image-container">
         <img
           src={question.imageUrl}
           alt=""
           class="w-64 h-40 object-cover rounded shadow image"
         />
-        <input bind:value={userInput} placeholder="Your answer..." />
+        <input
+          bind:value={userInput}
+          on:keydown={(e) => e.key === "Enter" && checkAnswer()}
+          placeholder="Your answer..."
+        />
         <button on:click={() => checkAnswer()}>Submit</button>
       </div>
     {/if}
@@ -82,8 +90,16 @@
     }
   }
 
-  .image {
-    aspect-ratio: 16 / 9;
+  .image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    input {
+      font-size: 1.5rem;
+    }
   }
   .question-options {
     display: grid;
