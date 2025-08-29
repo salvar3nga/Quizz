@@ -5,15 +5,10 @@
     score,
     quizFinished,
   } from "../store/quizStore";
-  import { onMount } from "svelte";
-
-  onMount(() => {
-    if ($currentQuestions.length === 0) {
-      quizFinished.set(true);
-    }
-  });
+  import { currentCategory } from "../store/quizStore";
 
   let question = $currentQuestions[$currentIndex];
+  let category = $currentCategory;
 
   function selectAnswer(index: number) {
     if (index === question.answer) {
@@ -30,7 +25,13 @@
   $: question = $currentQuestions[$currentIndex];
 </script>
 
-{#if question}
+{#if $currentQuestions.length === 0}
+  <p>
+    I'm cooking up some questions for this category.... Come back some time
+    later!
+  </p>
+  <button on:click={() => currentCategory.set(null)}>Home</button>
+{:else if question}
   <div>
     <h2>{question.question}</h2>
     <div class="question-options">

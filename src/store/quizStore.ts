@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
-import type { Question } from "@/constants/questions";
-import type {Category} from "../constants/category";
+import type { Question } from "@/constants/question";
+import type {Category} from "@/constants/category";
   import { get } from "svelte/store";
 
 
@@ -9,8 +9,10 @@ export const currentQuestions = writable<Question[]>([]);
 export const currentIndex = writable(0);
 export const score = writable(0);
 export const quizFinished = writable(false);
+const MAX_TIME = 15;
+const ONE_SECOND_IN_MS = 1000;
 
-export const timeLeft = writable(15);
+export const timeLeft = writable(MAX_TIME);
 let timerInterval: ReturnType<typeof setInterval> | null = null;
 
 export function startQuiz(category: Category, allQuestions: Question[]) {
@@ -31,11 +33,11 @@ export function resetTimer() {
     timeLeft.update(n => {
       if (n <= 1) {
         nextQuestion();
-        return 15; // reset for next
+        return MAX_TIME;
       }
       return n - 1;
     });
-  }, 1000);
+  }, ONE_SECOND_IN_MS);
 }
 
 export function nextQuestion() {

@@ -10,7 +10,7 @@
     "Science",
   ];
 
-  function handleSelect(category: Category) {
+  function onCategorySelect(category: Category) {
     startQuiz(category, questions);
   }
 </script>
@@ -18,7 +18,7 @@
 <div class="category-selector">
   <h2>Select a Category</h2>
   {#each categories as category}
-    <button on:click={() => handleSelect(category)}>{category}</button>
+    <button on:click={() => onCategorySelect(category)}>{category}</button>
   {/each}
 </div>
 
