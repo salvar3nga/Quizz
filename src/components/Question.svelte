@@ -33,10 +33,25 @@
 {#if question}
   <div>
     <h2>{question.question}</h2>
-    <div>
+    <div class="question-options">
       {#each question.options as option, i}
         <button on:click={() => selectAnswer(i)}>{option}</button>
       {/each}
     </div>
   </div>
 {/if}
+
+<style>
+  .question-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    .question-options {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+</style>

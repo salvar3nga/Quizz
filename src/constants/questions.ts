@@ -1,10 +1,4 @@
-import type { Category } from "./category";
-export type Question = {
-  question: string;
-  options: string[];
-  answer: number;
-  category: Category;   
-}
+import type { Question } from "./question";
 
 export const questions: Question[] = [
   {
