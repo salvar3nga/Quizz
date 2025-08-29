@@ -3,7 +3,8 @@
     currentQuestions,
     currentIndex,
     score,
-    quizFinished,
+    nextQuestion,
+    timeLeft,
   } from "../store/quizStore";
   import { currentCategory } from "../store/quizStore";
 
@@ -15,11 +16,7 @@
       score.update((n) => n + 1);
     }
 
-    if ($currentIndex + 1 < $currentQuestions.length) {
-      currentIndex.update((n) => n + 1);
-    } else {
-      quizFinished.set(true);
-    }
+    nextQuestion();
   }
 
   $: question = $currentQuestions[$currentIndex];
@@ -34,6 +31,7 @@
 {:else if question}
   <div>
     <h2>{question.question}</h2>
+    <p>Time left: {$timeLeft}s</p>
     <div class="question-options">
       {#each question.options as option, i}
         <button on:click={() => selectAnswer(i)}>{option}</button>
