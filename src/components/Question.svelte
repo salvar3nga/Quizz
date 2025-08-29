@@ -16,12 +16,21 @@
       if (String(selectedAnswer) === question.answer)
         score.update((n) => n + 1);
     } else {
-      if (
-        question.answer
-          .map((ans: string) => ans.trim().toLocaleLowerCase())
-          .includes(userInput.trim().toLocaleLowerCase())
-      ) {
-        score.update((n) => n + 1);
+      if (Array.isArray(question.answer)) {
+        if (
+          question.answer
+            .map((ans: string) => ans.trim().toLocaleLowerCase())
+            .includes(userInput.trim().toLocaleLowerCase())
+        ) {
+          score.update((n) => n + 1);
+        }
+      } else {
+        if (
+          userInput.trim().toLocaleLowerCase() ===
+          question.answer.trim().toLocaleLowerCase()
+        ) {
+          score.update((n) => n + 1);
+        }
       }
     }
     userInput = "";
@@ -60,11 +69,7 @@
       </div>
     {:else if question.type === "image"}
       <div class="image-container">
-        <img
-          src={question.imageUrl}
-          alt=""
-          class="w-64 h-40 object-cover rounded shadow image"
-        />
+        <img src={question.imageUrl} alt="" class="image" />
         <input
           bind:value={userInput}
           on:keydown={(e) => e.key === "Enter" && checkAnswer()}
