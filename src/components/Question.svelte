@@ -10,31 +10,59 @@
 
   let question = $currentQuestions[$currentIndex];
   let userInput = "";
+  let selected: number | null = null;
+  let isLocked: boolean = false;
+  let isTypedAnswerCorrect: boolean | null = null;
 
-  function checkAnswer(selectedAnswer?: number) {
-    if (question.type === "mcq") {
-      if (String(selectedAnswer) === question.answer)
+  function checkMcAnswer(selectedAnswer: number) {
+    if (isLocked) return;
+    selected = selectedAnswer;
+    isLocked = true;
+
+    if (String(selectedAnswer) === question.answer) {
+      score.update((n) => n + 1);
+    }
+
+    delayNextQuestionReveal();
+  }
+
+  function checkTypedAnswer() {
+    if (isLocked) return;
+    isLocked = true;
+
+    if (Array.isArray(question.answer)) {
+      if (
+        question.answer
+          .map((ans: string) => ans.trim().toLocaleLowerCase())
+          .includes(userInput.trim().toLocaleLowerCase())
+      ) {
+        isTypedAnswerCorrect = true;
         score.update((n) => n + 1);
-    } else {
-      if (Array.isArray(question.answer)) {
-        if (
-          question.answer
-            .map((ans: string) => ans.trim().toLocaleLowerCase())
-            .includes(userInput.trim().toLocaleLowerCase())
-        ) {
-          score.update((n) => n + 1);
-        }
       } else {
-        if (
-          userInput.trim().toLocaleLowerCase() ===
-          question.answer.trim().toLocaleLowerCase()
-        ) {
-          score.update((n) => n + 1);
-        }
+        isTypedAnswerCorrect = false;
+      }
+    } else {
+      if (
+        userInput.trim().toLocaleLowerCase() ===
+        question.answer.trim().toLocaleLowerCase()
+      ) {
+        isTypedAnswerCorrect = true;
+        score.update((n) => n + 1);
+      } else {
+        isTypedAnswerCorrect = false;
       }
     }
-    userInput = "";
-    nextQuestion();
+    delayNextQuestionReveal(500);
+  }
+
+  function delayNextQuestionReveal(delayInMS: number = 500) {
+    setTimeout(() => {
+      selected = null;
+      isLocked = false;
+      userInput = "";
+      isTypedAnswerCorrect = null;
+      nextQuestion();
+    }, delayInMS);
   }
 
   $: question = $currentQuestions[$currentIndex];
@@ -55,27 +83,38 @@
     {#if question.type === "mcq"}
       <div class="question-options">
         {#each question.options as option, i}
-          <button on:click={() => checkAnswer(i)}>{option}</button>
+          <button
+            on:click={() => checkMcAnswer(i)}
+            class={selected === i && isLocked
+              ? String(selected) === question.answer
+                ? "correct"
+                : "incorrect"
+              : ""}>{option}</button
+          >
         {/each}
       </div>
     {:else if question.type === "text"}
       <div>
         <input
           bind:value={userInput}
-          on:keydown={(e) => e.key === "Enter" && checkAnswer()}
+          on:keydown={(e) => e.key === "Enter" && checkTypedAnswer()}
           placeholder="Type your answer..."
+          class:correct={isTypedAnswerCorrect === true}
+          class:incorrect={isTypedAnswerCorrect === false}
         />
-        <button on:click={() => checkAnswer()}>Submit</button>
+        <button on:click={() => checkTypedAnswer()}>Submit</button>
       </div>
     {:else if question.type === "image"}
       <div class="image-container">
         <img src={question.imageUrl} alt="" class="image" />
         <input
           bind:value={userInput}
-          on:keydown={(e) => e.key === "Enter" && checkAnswer()}
+          on:keydown={(e) => e.key === "Enter" && checkTypedAnswer()}
           placeholder="Your answer..."
+          class:correct={isTypedAnswerCorrect === true}
+          class:incorrect={isTypedAnswerCorrect === false}
         />
-        <button on:click={() => checkAnswer()}>Submit</button>
+        <button on:click={() => checkTypedAnswer()}>Submit</button>
       </div>
     {/if}
   </div>
@@ -111,6 +150,16 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
+  }
+
+  .correct {
+    background-color: green;
+    color: white;
+  }
+
+  .incorrect {
+    background-color: #b50606;
+    color: white;
   }
 
   @media (max-width: 600px) {
