@@ -1,7 +1,8 @@
 import { writable } from "svelte/store";
 import type { Question } from "@/constants/question";
 import type {Category} from "@/constants/category";
-  import { get } from "svelte/store";
+import { get } from "svelte/store";
+import { shuffleArray } from "@/utils/shuffle";
 
 
 export const currentCategory = writable<Category | null>(null);
@@ -17,7 +18,20 @@ let timerInterval: ReturnType<typeof setInterval> | null = null;
 
 export function startQuiz(category: Category, allQuestions: Question[]) {
   currentCategory.set(category);
-  currentQuestions.set(allQuestions.filter(q => q.category === category));
+
+  const filteredQuestions = allQuestions.filter(q => q.category === category);
+  const randomizedQuestions = shuffleArray(filteredQuestions);
+
+  randomizedQuestions.forEach(q => {
+    if(q.type === "mcq" && q.options){
+      q.options = shuffleArray(q.options);
+
+      const correct = q.options.findIndex(opt => opt === q.answerText);
+      q.answer = String(correct);
+    }
+  })
+
+  currentQuestions.set(randomizedQuestions);
   currentIndex.set(0);
   score.set(0);
   quizFinished.set(false);

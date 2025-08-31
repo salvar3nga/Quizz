@@ -7,6 +7,7 @@ export const questions: Question[] = [
     question: "What is the capital of France?",
     options: ["Berlin", "Madrid", "Paris", "Rome"],
     answer: "2",
+    answerText: "Paris"
   },
   {
     type: "mcq",
@@ -14,6 +15,7 @@ export const questions: Question[] = [
     options: ["Tigris", "Euphrates", "Nile", "Amazon"],
     answer: "0",
     category: "Geography",
+    answerText: "Tigris"
   },
   {
     type: "mcq",
@@ -21,6 +23,7 @@ export const questions: Question[] = [
     options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
     answer: "3",
     category: "Geography",
+    answerText: "Pacific Ocean"
   },
   {
     type: "text",
@@ -42,6 +45,7 @@ export const questions: Question[] = [
     question: "What is the chemical symbol for water?",
     options: ["O2", "H2O", "CO2", "HO2"],
     answer: "1",
+    answerText: "H2O"
   },
   {
     type: "text",
@@ -55,6 +59,7 @@ export const questions: Question[] = [
     question: "Which planet is known as the Red Planet?",
     options: ["Venus", "Mars", "Jupiter", "Saturn"],
     answer: "1",
+    answerText: "Mars"
   },
   // Science
   {
@@ -63,6 +68,7 @@ export const questions: Question[] = [
     question: "What gas do plants absorb from the atmosphere?",
     options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
     answer: "2",
+    answerText: "Carbon Dioxide"
   },
   {
     type: "text",
@@ -76,6 +82,7 @@ export const questions: Question[] = [
     question: "What is the boiling point of water at sea level?",
     options: ["100°C", "0°C", "50°C", "212°C"],
     answer: "0",
+    answerText: "100°C"
   },
   // History
   {
@@ -84,6 +91,7 @@ export const questions: Question[] = [
     question: "In which year did World War II end?",
     options: ["1942", "1945", "1939", "1950"],
     answer: "1",
+    answerText: "1945"
   },
   {
     type: "text",
@@ -97,6 +105,7 @@ export const questions: Question[] = [
     question: "Which ancient civilization built the pyramids?",
     options: ["Romans", "Egyptians", "Greeks", "Mayans"],
     answer: "1",
+    answerText: "Egyptians"
   },
   // Geography
   {
@@ -105,6 +114,7 @@ export const questions: Question[] = [
     question: "Which continent is the Sahara Desert located in?",
     options: ["Asia", "Africa", "Australia", "Europe"],
     answer: "1",
+    answerText: "Africa"
   },
   {
     type: "mcq",
@@ -112,6 +122,7 @@ export const questions: Question[] = [
     question: "Mount Everest is located in which mountain range?",
     options: ["Andes", "Rockies", "Himalayas", "Alps"],
     answer: "2",
+    answerText: "Himalayas"
   },
   {
     type: "text",

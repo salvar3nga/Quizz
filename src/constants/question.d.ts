@@ -9,4 +9,5 @@ export type Question = {
   type: QuestionType;
   category: Category;
   imageUrl?: string;
+  answerText?: string;
 }
