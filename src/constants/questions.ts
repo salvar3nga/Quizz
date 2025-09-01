@@ -1,43 +1,6 @@
 import type { Question } from "./question";
 
 export const questions: Question[] = [
-  {
-    type: "mcq",
-    category: "Geography",
-    question: "What is the capital of France?",
-    options: ["Berlin", "Madrid", "Paris", "Rome"],
-    answer: "2",
-    answerText: "Paris"
-  },
-  {
-    type: "mcq",
-    question: "Which river runs through Baghdad?",
-    options: ["Tigris", "Euphrates", "Nile", "Amazon"],
-    answer: "0",
-    category: "Geography",
-    answerText: "Tigris"
-  },
-  {
-    type: "mcq",
-    question: "What is the largest ocean on Earth?",
-    options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
-    answer: "3",
-    category: "Geography",
-    answerText: "Pacific Ocean"
-  },
-  {
-    type: "text",
-    category: "History",
-    question: "Who was the first president of the USA?",
-    answer: ["George Washington", "George W.", "G. Washington"],
-  },
-  {
-    type: "image",
-    category: "Geography",
-    question: "Name the country",
-    answer: "Angola",
-    imageUrl: "../../public/flags/Angola.png"
-  },
   // General Knowledge
   {
     type: "mcq",
@@ -107,6 +70,12 @@ export const questions: Question[] = [
     answer: "1",
     answerText: "Egyptians"
   },
+  {
+    type: "text",
+    category: "History",
+    question: "Who was the first president of the USA?",
+    answer: ["George Washington", "George W.", "G. Washington"],
+  },
   // Geography
   {
     type: "mcq",
@@ -136,6 +105,37 @@ export const questions: Question[] = [
     question: "Name the country",
     answer: "Lebanon",
     imageUrl: "../../public/flags/Lebanon.png"
+  },
+  {
+    type: "mcq",
+    category: "Geography",
+    question: "What is the capital of France?",
+    options: ["Berlin", "Madrid", "Paris", "Rome"],
+    answer: "2",
+    answerText: "Paris"
+  },
+  {
+    type: "mcq",
+    question: "Which river runs through Baghdad?",
+    options: ["Tigris", "Euphrates", "Nile", "Amazon"],
+    answer: "0",
+    category: "Geography",
+    answerText: "Tigris"
+  },
+  {
+    type: "mcq",
+    question: "What is the largest ocean on Earth?",
+    options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+    answer: "3",
+    category: "Geography",
+    answerText: "Pacific Ocean"
+  },
+    {
+    type: "image",
+    category: "Geography",
+    question: "Name the country",
+    answer: "Angola",
+    imageUrl: "../../public/flags/Angola.png"
   },
 ];
 

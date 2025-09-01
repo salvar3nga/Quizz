@@ -10,6 +10,12 @@ export const currentQuestions = writable<Question[]>([]);
 export const currentIndex = writable(0);
 export const score = writable(0);
 export const quizFinished = writable(false);
+export const answers = writable<{
+  question: Question;
+  userAnswer: string | null;
+  isCorrect: boolean;
+}[]>([]);
+
 const MAX_TIME = 15;
 const ONE_SECOND_IN_MS = 1000;
 
@@ -35,6 +41,7 @@ export function startQuiz(category: Category, allQuestions: Question[]) {
   currentIndex.set(0);
   score.set(0);
   quizFinished.set(false);
+  answers.set([]);
   resetTimer();
 }
 
@@ -65,4 +72,18 @@ export function nextQuestion() {
     quizFinished.set(true);
     if (timerInterval) clearInterval(timerInterval);
   }
+}
+
+export function recordAnswer(question: Question, userAnswer: string, isCorrect: boolean) {
+  answers.update(arr => [...arr, { question, userAnswer, isCorrect: isCorrect }]);
+}
+
+export function resetGame(){
+  currentCategory.set(null);
+  currentQuestions.set([]);
+  currentIndex.set(0);
+  score.set(0);
+  quizFinished.set(false);
+  answers.set([]);
+  resetTimer();
 }
