@@ -24,9 +24,19 @@ let timerInterval: ReturnType<typeof setInterval> | null = null;
 
 export function startQuiz(category: Category, allQuestions: Question[]) {
   currentCategory.set(category);
+  let selectedQuestions: Question[] = [];
 
-  const filteredQuestions = allQuestions.filter(q => q.category === category);
-  const randomizedQuestions = shuffleArray(filteredQuestions);
+  if(category === "All"){
+    const groupedCategories : Category[]= ["General Knowledge", "Geography", "History", "Science"];
+    selectedQuestions = groupedCategories.flatMap(cat => {
+      const filtered = allQuestions.filter(q => q.category === cat);
+      return shuffleArray(filtered).slice(0, 10);
+    })
+  }else{
+    selectedQuestions = allQuestions.filter(q => q.category === category);
+  }
+  
+  const randomizedQuestions = shuffleArray(selectedQuestions);
 
   randomizedQuestions.forEach(q => {
     if(q.type === "mcq" && q.options){
