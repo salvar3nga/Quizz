@@ -34,8 +34,10 @@
         <p>
           Correct answer: <span class="answer-right"
             >{ans.question.type === "mcq"
-              ? ans.question.options[+ans.question.answer]
-              : ans.question.answer}</span
+              ? ans.question.options[ans.question.answer]
+              : ans.question.answer[0]
+                ? ans.question.answer[0]
+                : ans.question.answer}</span
           >
         </p>
       </div>

@@ -141,6 +141,10 @@
     }
   }
 
+  img {
+    max-inline-size: 100%;
+  }
+
   .image-container {
     display: flex;
     flex-direction: column;
