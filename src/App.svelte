@@ -1,7 +1,7 @@
 <script lang="ts">
   import CategorySelector from "./components/CategorySelector.svelte";
   import Question from "./components/Question.svelte";
-  import Score from "./components/Score.svelte";
+  import Report from "./components/Report.svelte";
   import { quizFinished, currentCategory } from "./store/quizStore";
 </script>
 
@@ -11,6 +11,6 @@
   {:else if !$quizFinished}
     <Question />
   {:else}
-    <Score />
+    <Report />
   {/if}
 </main>

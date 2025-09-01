@@ -5,8 +5,9 @@
     score,
     nextQuestion,
     timeLeft,
+    currentCategory,
+    recordAnswer,
   } from "../store/quizStore";
-  import { currentCategory } from "../store/quizStore";
 
   let question = $currentQuestions[$currentIndex];
   let userInput = "";
@@ -19,10 +20,15 @@
     selected = selectedAnswer;
     isLocked = true;
 
-    if (String(selectedAnswer) === question.answer) {
+    const isCorrect = String(selectedAnswer) === question.answer;
+
+    if (isCorrect) {
       score.update((n) => n + 1);
     }
 
+    const convertedAnswer = question.options[selectedAnswer];
+
+    recordAnswer(question, convertedAnswer, isCorrect);
     delayNextQuestionReveal();
   }
 
@@ -38,8 +44,10 @@
       ) {
         isTypedAnswerCorrect = true;
         score.update((n) => n + 1);
+        recordAnswer(question, userInput, true);
       } else {
         isTypedAnswerCorrect = false;
+        recordAnswer(question, userInput, false);
       }
     } else {
       if (
@@ -48,8 +56,10 @@
       ) {
         isTypedAnswerCorrect = true;
         score.update((n) => n + 1);
+        recordAnswer(question, userInput, true);
       } else {
         isTypedAnswerCorrect = false;
+        recordAnswer(question, userInput, false);
       }
     }
     delayNextQuestionReveal(500);
@@ -63,6 +73,14 @@
       isTypedAnswerCorrect = null;
       nextQuestion();
     }, delayInMS);
+  }
+
+  function getAnswer() {
+    if (question.type === "mcq") {
+      return question.options[selected];
+    } else {
+      return userInput;
+    }
   }
 
   $: question = $currentQuestions[$currentIndex];
@@ -153,12 +171,12 @@
   }
 
   .correct {
-    background-color: green;
+    background-color: #16a34a;
     color: white;
   }
 
   .incorrect {
-    background-color: #b50606;
+    background-color: #dc2626;
     color: white;
   }
 
