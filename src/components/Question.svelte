@@ -10,6 +10,7 @@
   } from "../store/quizStore";
 
   import Input from "./Input.svelte";
+  import Button from "./Button.svelte";
 
   let question = $currentQuestions[$currentIndex];
   let userInput = "";
@@ -108,13 +109,18 @@
     {:else if question.type === "text"}
       <div class="input-container">
         <Input bind:typedAnswer={userInput} onCheckAnswer={checkTypedAnswer} />
-        <button on:click={() => checkTypedAnswer()}>Submit</button>
+        <Button onClick={checkTypedAnswer} />
       </div>
     {:else if question.type === "image"}
       <div class="image-container">
         <img src={question.imageUrl} alt="" class="image" />
-        <Input bind:typedAnswer={userInput} onCheckAnswer={checkTypedAnswer} />
-        <button on:click={() => checkTypedAnswer()}>Submit</button>
+        <div class="input-container">
+          <Input
+            bind:typedAnswer={userInput}
+            onCheckAnswer={checkTypedAnswer}
+          />
+          <Button onClick={checkTypedAnswer} />
+        </div>
       </div>
     {/if}
   </div>
@@ -147,6 +153,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 3rem;
   }
   .question-options {
     display: grid;
