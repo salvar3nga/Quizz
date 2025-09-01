@@ -9,6 +9,8 @@
     recordAnswer,
   } from "../store/quizStore";
 
+  import Input from "./Input.svelte";
+
   let question = $currentQuestions[$currentIndex];
   let userInput = "";
   let selected: number | null = null;
@@ -75,14 +77,6 @@
     }, delayInMS);
   }
 
-  function getAnswer() {
-    if (question.type === "mcq") {
-      return question.options[selected];
-    } else {
-      return userInput;
-    }
-  }
-
   $: question = $currentQuestions[$currentIndex];
 </script>
 
@@ -112,26 +106,14 @@
         {/each}
       </div>
     {:else if question.type === "text"}
-      <div>
-        <input
-          bind:value={userInput}
-          on:keydown={(e) => e.key === "Enter" && checkTypedAnswer()}
-          placeholder="Type your answer..."
-          class:correct={isTypedAnswerCorrect === true}
-          class:incorrect={isTypedAnswerCorrect === false}
-        />
+      <div class="input-container">
+        <Input bind:typedAnswer={userInput} onCheckAnswer={checkTypedAnswer} />
         <button on:click={() => checkTypedAnswer()}>Submit</button>
       </div>
     {:else if question.type === "image"}
       <div class="image-container">
         <img src={question.imageUrl} alt="" class="image" />
-        <input
-          bind:value={userInput}
-          on:keydown={(e) => e.key === "Enter" && checkTypedAnswer()}
-          placeholder="Your answer..."
-          class:correct={isTypedAnswerCorrect === true}
-          class:incorrect={isTypedAnswerCorrect === false}
-        />
+        <Input bind:typedAnswer={userInput} onCheckAnswer={checkTypedAnswer} />
         <button on:click={() => checkTypedAnswer()}>Submit</button>
       </div>
     {/if}
@@ -161,8 +143,10 @@
     margin-bottom: 1rem;
   }
 
-  input {
-    font-size: 1.5rem;
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   .question-options {
     display: grid;
