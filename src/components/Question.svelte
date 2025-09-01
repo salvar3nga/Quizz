@@ -11,6 +11,7 @@
 
   import Input from "./Input.svelte";
   import Button from "./Button.svelte";
+  import { get } from "svelte/store";
 
   let question = $currentQuestions[$currentIndex];
   let userInput = "";
@@ -90,9 +91,11 @@
 {:else if question}
   <div>
     <h2>{question.question}</h2>
-    <div class="timer-container">
-      <div class="timer-bar" style="width: {($timeLeft / 15) * 100}%"></div>
-    </div>
+    {#if get(currentCategory) === "All"}
+      <div class="timer-container">
+        <div class="timer-bar" style="width: {($timeLeft / 15) * 100}%"></div>
+      </div>
+    {/if}
     {#if question.type === "mcq"}
       <div class="question-options">
         {#each question.options as option, i}
