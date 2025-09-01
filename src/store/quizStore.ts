@@ -17,7 +17,7 @@ export const answers = writable<
   }[]
 >([]);
 
-export const MAX_TIME = 15;
+export const MAX_TIME = 20;
 const ONE_SECOND_IN_MS = 1000;
 
 export const timeLeft = writable(MAX_TIME);
@@ -64,7 +64,7 @@ export function startQuiz(category: Category, allQuestions: Question[]) {
 export function resetTimer() {
   if (get(currentCategory) !== "All") return;
 
-  timeLeft.set(15);
+  timeLeft.set(MAX_TIME);
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(() => {
     timeLeft.update((n) => {

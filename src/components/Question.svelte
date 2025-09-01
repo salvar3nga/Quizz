@@ -7,6 +7,7 @@
     timeLeft,
     currentCategory,
     recordAnswer,
+    MAX_TIME,
   } from "../store/quizStore";
 
   import Input from "./Input.svelte";
@@ -93,7 +94,10 @@
     <h2>{question.question}</h2>
     {#if get(currentCategory) === "All"}
       <div class="timer-container">
-        <div class="timer-bar" style="width: {($timeLeft / 15) * 100}%"></div>
+        <div
+          class="timer-bar"
+          style="width: {($timeLeft / MAX_TIME) * 100}%"
+        ></div>
       </div>
     {/if}
     {#if question.type === "mcq"}
