@@ -1,7 +1,7 @@
 # 🧠 Quizz Mei
 
 A quiz application built with **Vite + Svelte + TypeScript**.  
-Supports multiple categories, randomized questions, timers, text-input answers, and image-based questions.
+Running on: https://salvar3nga.github.io/Quizz/ it supports multiple categories, randomized questions, timers, text-input answers, and image-based questions.
 
 ---
 

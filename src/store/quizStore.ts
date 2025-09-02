@@ -38,11 +38,13 @@ export function startQuiz(category: Category, allQuestions: Question[]) {
       const filtered = allQuestions.filter((q) => q.category === cat);
       return shuffleArray(filtered).slice(0, 10);
     });
+    selectedQuestions = shuffleArray(selectedQuestions);
   } else {
     selectedQuestions = allQuestions.filter((q) => q.category === category);
+    selectedQuestions = shuffleArray(selectedQuestions).slice(0, 10);
   }
 
-  const randomizedQuestions = shuffleArray(selectedQuestions).slice(0, 10);
+  const randomizedQuestions = selectedQuestions;
 
   randomizedQuestions.forEach((q) => {
     if (q.type === "mcq" && q.options) {
