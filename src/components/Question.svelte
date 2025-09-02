@@ -4,14 +4,13 @@
     currentIndex,
     score,
     nextQuestion,
-    timeLeft,
     currentCategory,
     recordAnswer,
-    MAX_TIME,
   } from "../store/quizStore";
 
   import Input from "./Input.svelte";
   import Button from "./Button.svelte";
+  import TimeTracking from "./TimeTracking.svelte";
   import { get } from "svelte/store";
 
   let question = $currentQuestions[$currentIndex];
@@ -93,12 +92,7 @@
   <div>
     <h2>{question.question}</h2>
     {#if get(currentCategory) === "All"}
-      <div class="timer-container">
-        <div
-          class="timer-bar"
-          style="width: {($timeLeft / MAX_TIME) * 100}%"
-        ></div>
-      </div>
+      <TimeTracking />
     {/if}
     {#if question.type === "mcq"}
       <div class="question-options">
@@ -134,20 +128,6 @@
 {/if}
 
 <style>
-  .timer-container {
-    margin: 1rem 0;
-    width: 100%;
-    background-color: #f1f1f1;
-    height: 1rem;
-    border-radius: 5%;
-
-    .timer-bar {
-      background-color: rgba(0, 187, 255, 0.462);
-      height: 1rem;
-      border-radius: 5%;
-    }
-  }
-
   img {
     max-inline-size: 100%;
   }

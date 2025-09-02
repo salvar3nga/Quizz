@@ -4,6 +4,12 @@ import type { Category } from "@/constants/category";
 import { get } from "svelte/store";
 import { shuffleArray } from "@/utils/shuffle";
 
+import {
+  TIMER_DURATION,
+  MAX_QUESTIONS_PER_CATEGORY,
+  MAX_QUESTIONS_IN_ALL_CATEGORIES,
+} from "@/constants/constants";
+
 export const currentCategory = writable<Category | null>(null);
 export const currentQuestions = writable<Question[]>([]);
 export const currentIndex = writable(0);
@@ -17,10 +23,9 @@ export const answers = writable<
   }[]
 >([]);
 
-export const MAX_TIME = 20;
 const ONE_SECOND_IN_MS = 1000;
 
-export const timeLeft = writable(MAX_TIME);
+export const timeLeft = writable(TIMER_DURATION);
 let timerInterval: ReturnType<typeof setInterval> | null = null;
 
 export function startQuiz(category: Category, allQuestions: Question[]) {
@@ -36,12 +41,15 @@ export function startQuiz(category: Category, allQuestions: Question[]) {
     ];
     selectedQuestions = groupedCategories.flatMap((cat) => {
       const filtered = allQuestions.filter((q) => q.category === cat);
-      return shuffleArray(filtered).slice(0, 10);
+      return shuffleArray(filtered).slice(0, MAX_QUESTIONS_IN_ALL_CATEGORIES);
     });
     selectedQuestions = shuffleArray(selectedQuestions);
   } else {
     selectedQuestions = allQuestions.filter((q) => q.category === category);
-    selectedQuestions = shuffleArray(selectedQuestions).slice(0, 10);
+    selectedQuestions = shuffleArray(selectedQuestions).slice(
+      0,
+      MAX_QUESTIONS_PER_CATEGORY
+    );
   }
 
   const randomizedQuestions = selectedQuestions;
@@ -66,13 +74,13 @@ export function startQuiz(category: Category, allQuestions: Question[]) {
 export function resetTimer() {
   if (get(currentCategory) !== "All") return;
 
-  timeLeft.set(MAX_TIME);
+  timeLeft.set(TIMER_DURATION);
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(() => {
     timeLeft.update((n) => {
       if (n <= 1) {
         nextQuestion();
-        return MAX_TIME;
+        return TIMER_DURATION;
       }
       return n - 1;
     });
