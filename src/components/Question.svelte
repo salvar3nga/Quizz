@@ -91,11 +91,11 @@
   <button on:click={() => currentCategory.set(null)}>Home</button>
 {:else if question}
   <div class="question-container">
-    <QuestionCounter />
-    <h2>{question.question}</h2>
     {#if get(currentCategory) === "All"}
       <TimeTracking />
     {/if}
+    <QuestionCounter />
+    <h2>{question.question}</h2>
     {#if question.type === "mcq"}
       <div class="question-options">
         {#each question.options! as option, i}
@@ -137,7 +137,6 @@
     justify-content: center;
     width: 90%;
     height: 65%;
-    outline: 2px solid slateblue;
   }
 
   img {

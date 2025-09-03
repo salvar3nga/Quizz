@@ -7,12 +7,16 @@
   } from "../store/quizStore";
 
   let allAnswers = $answers;
+
+  import FinalMessage from "./FinalMessage.svelte";
 </script>
 
 <div class="report-container">
   <div>
-    <h2 class="report-title">Let's see how you did</h2>
-    <p>Your score: {$score} / {$currentQuestions.length}</p>
+    <h2 class="report-title">
+      Your score: {$score} / {$currentQuestions.length}
+    </h2>
+    <FinalMessage />
   </div>
 
   <div class="answers-container">
@@ -54,7 +58,7 @@
   }
 
   .report-title {
-    font-size: 1.25rem;
+    font-size: 2rem;
     font-weight: bold;
   }
 

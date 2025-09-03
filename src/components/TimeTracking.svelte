@@ -9,13 +9,13 @@
 
 <div class="timer-container">
   <div
-    class={$timeLeft < LOW_TIME_WARNING_THRESHOLD_IN_SECONDS
+    class={$timeLeft <= LOW_TIME_WARNING_THRESHOLD_IN_SECONDS
       ? "low-time timer-bar"
       : "timer-bar"}
     style="width: {($timeLeft / TIMER_DURATION) * 100}%"
   ></div>
   <span
-    class={$timeLeft < LOW_TIME_WARNING_THRESHOLD_IN_SECONDS
+    class={$timeLeft <= LOW_TIME_WARNING_THRESHOLD_IN_SECONDS
       ? "low-time-counter timer-counter"
       : "timer-counter"}>{$timeLeft}s</span
   >
@@ -23,12 +23,13 @@
 
 <style>
   .timer-container {
-    margin: 1rem 0;
+    margin-bottom: 1.5rem;
     width: 100%;
     background-color: #f1f1f1;
     height: 1rem;
     border-radius: 5%;
     position: relative;
+    width: 50%;
 
     .timer-bar {
       background-color: rgba(0, 187, 255, 0.462);
