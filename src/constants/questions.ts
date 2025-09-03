@@ -1,7 +1,7 @@
 import type { Question } from "./question";
 
 export const questions: Question[] = [
-  // General Knowledge
+  // GENERAL KNOWLEDGE
   {
     type: "mcq",
     category: "General Knowledge",
@@ -117,6 +117,12 @@ export const questions: Question[] = [
     options: ["Tomato", "Avocado", "Onion", "Pepper"],
     answer: "1",
     answerText: "Avocado",
+  },
+  {
+    type: "text",
+    category: "General Knowledge",
+    question: "Which country created the dish: Saganaki?",
+    answer: "Greece",
   },
   {
     type: "mcq",
@@ -326,8 +332,29 @@ export const questions: Question[] = [
   {
     type: "text",
     category: "Science",
-    question: "What is the process by which plants make their food?",
-    answer: ["Photosynthesis", "photosynthesis"],
+    question: "Who was the first american in space?",
+    answer: ["Alan Shepard", "Shepard"],
+  },
+  {
+    type: "mcq",
+    category: "Science",
+    question: "What is the pH of pure water?",
+    options: ["7", "3", "5", "9"],
+    answer: "0",
+    answerText: "7",
+  },
+  {
+    type: "mcq",
+    category: "Science",
+    question: "Who is credited with inventing the telephone?",
+    options: [
+      "Alexander Graham Bell",
+      "Martin Cooper",
+      "Aristotle",
+      "Guglielmo Marconi",
+    ],
+    answer: "0",
+    answerText: "Alexander Graham Bell",
   },
   {
     type: "mcq",
@@ -366,7 +393,7 @@ export const questions: Question[] = [
     question: "What is the unit of electrical resistance?",
     answer: ["Ohm", "ohm"],
   },
-  // History
+  // HISTORY
   {
     type: "mcq",
     category: "History",
@@ -484,22 +511,31 @@ export const questions: Question[] = [
     answer: ["King John", "John"],
   },
   {
-    type: "text",
+    type: "mcq",
     category: "History",
-    question: "Who was the first president of France?",
-    answer: ["Louis-Napoleon Bonaparte", "Napoleon III"],
+    question: "Between which nations was the shortest war in human history?",
+    options: [
+      "Britain and Zanzibar",
+      "Rome and Carthage",
+      "Greece and Persia",
+      "France and Guadaloupe",
+    ],
+    answer: "0",
+    answerText: "Britain and Zanzibar",
   },
   {
     type: "text",
     category: "History",
-    question: "Who was the first president of India?",
-    answer: ["Rajendra Prasad", "Prasad", "R. Prasad", "Rajendra"],
+    question: "In which year was John F. Kennedy assassinated?",
+    answer: ["1963", "63"],
   },
   {
-    type: "text",
+    type: "mcq",
     category: "History",
-    question: "Who was the first president of Brazil?",
-    answer: ["Deodoro da Fonseca", "Fonseca", "D. Fonseca", "Deodoro"],
+    question: "Which greek historian is known as the father of history?",
+    options: ["Herodotus", "Thucydides", "Xenophon", "Plutarch"],
+    answer: "0",
+    answerText: "Herodotus",
   },
   {
     type: "text",
@@ -510,8 +546,8 @@ export const questions: Question[] = [
   {
     type: "text",
     category: "History",
-    question: "Who was the first president of China?",
-    answer: ["Sun Yat-sen", "Yat-sen", "S. Yat-sen", "Sun"],
+    question: "Who was the roman emperor between A.D. 54 and A.D. 68?",
+    answer: ["Nero", "N. Nero", "Nero Claudius Caesar", "Claudius"],
   },
   {
     type: "text",
@@ -522,8 +558,8 @@ export const questions: Question[] = [
   {
     type: "text",
     category: "History",
-    question: "Who was the first president of South Korea?",
-    answer: ["Syngman Rhee", "Rhee", "S. Rhee", "Syngman"],
+    question: "Before it's independence, what was Bangladesh called?",
+    answer: ["East Pakistan", "E. Pakistan"],
   },
   {
     type: "text",
@@ -604,7 +640,7 @@ export const questions: Question[] = [
     answer: ["Vladimir Lenin", "Lenin", "V. Lenin", "Vladimir"],
     imageUrl: "./people/lenin.jpg",
   },
-  // Geography
+  // GEOGRAPHY
   {
     type: "mcq",
     category: "Geography",
@@ -774,11 +810,22 @@ export const questions: Question[] = [
     answer: ["Kiel"],
   },
   {
-    type: "image",
+    type: "text",
     category: "Geography",
-    question: "Name the country",
-    answer: "Lebanon",
-    imageUrl: "./flags/Lebanon.png",
+    question: "What is the capital of Niedersachsen?",
+    answer: ["Hannover"],
+  },
+  {
+    type: "text",
+    category: "Geography",
+    question: "What is the capital of Nord Rhein Westfalen?",
+    answer: ["Düsseldorf", "Duesseldorf"],
+  },
+  {
+    type: "text",
+    category: "Geography",
+    question: "What is the capital of Thüringen?",
+    answer: ["Erfurt"],
   },
   {
     type: "mcq",
@@ -822,12 +869,97 @@ export const questions: Question[] = [
     answer: "0",
     answerText: "Caspian Sea",
   },
+  //Geography - Flags
   {
     type: "image",
     category: "Geography",
     question: "Name the country",
     answer: "Angola",
     imageUrl: "./flags/Angola.png",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the country",
+    answer: "Lebanon",
+    imageUrl: "./flags/Lebanon.png",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the country",
+    answer: ["Netherlands", "Holland", "Niederlande"],
+    imageUrl: "./flags/Netherlands.png",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the country",
+    answer: "Bahamas",
+    imageUrl: "./flags/Bahamas.png",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the country",
+    answer: "Chile",
+    imageUrl: "./flags/Chile.png",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the country",
+    answer: "Cambodia",
+    imageUrl: "./flags/Cambodia.png",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the country",
+    answer: ["Ethiopia", "Äthiopien"],
+    imageUrl: "./flags/Ethiopia.png",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the country",
+    answer: ["Guinea Bissau", "Guiné Bissau", "Guiné-Bissau", "Bissau Guinea"],
+    imageUrl: "./flags/Guinea_Bissau.png",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the country",
+    answer: ["Germany", "Deutschland", "Alemanha"],
+    imageUrl: "./flags/Germany.png",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the country",
+    answer: ["Albania", "Shqipëria", "Albanien"],
+    imageUrl: "./flags/Albania.png",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the country",
+    answer: ["Peru", "República del Perú"],
+    imageUrl: "./flags/Peru.png",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the country",
+    answer: ["Slovenia", "Slovenija"],
+    imageUrl: "./flags/Slovenia.png",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the country",
+    answer: ["Tunisia", "تونس"],
+    imageUrl: "./flags/Tunisia.png",
   },
   {
     type: "mcq",
@@ -843,6 +975,7 @@ export const questions: Question[] = [
     question: "What is the capital city of Mongolia?",
     answer: ["Ulaanbaatar"],
   },
+  // Geography - Cities
   {
     type: "image",
     category: "Geography",
@@ -884,5 +1017,47 @@ export const questions: Question[] = [
     question: "Name the city!",
     answer: ["Lisbon", "Lisboa", "Lissabon"],
     imageUrl: "./cities/lis.jpg",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the city!",
+    answer: ["Bangkok"],
+    imageUrl: "./cities/Bangkok.jpg",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the city!",
+    answer: ["Budapest"],
+    imageUrl: "./cities/Budapest.jpg",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the city!",
+    answer: ["Casablanca"],
+    imageUrl: "./cities/Casablanca.jpg",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the city!",
+    answer: ["Mexico City", "Ciudad de México", "Mexiko Stadt"],
+    imageUrl: "./cities/Mexico_city.jpg",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the city!",
+    answer: ["Monaco", "Monte Carlo"],
+    imageUrl: "./cities/Monaco.jpg",
+  },
+  {
+    type: "image",
+    category: "Geography",
+    question: "Name the city!",
+    answer: ["Porto", "Oporto"],
+    imageUrl: "./cities/Porto.jpg",
   },
 ];

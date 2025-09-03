@@ -30,7 +30,7 @@
       score.update((n) => n + 1);
     }
 
-    const convertedAnswer = question.options[selectedAnswer];
+    const convertedAnswer = question.options![selectedAnswer];
 
     recordAnswer(question, convertedAnswer, isCorrect);
     delayNextQuestionReveal();
@@ -96,7 +96,7 @@
     {/if}
     {#if question.type === "mcq"}
       <div class="question-options">
-        {#each question.options as option, i}
+        {#each question.options! as option, i}
           <button
             on:click={() => checkMcAnswer(i)}
             class={selected === i && isLocked
