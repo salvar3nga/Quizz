@@ -11,7 +11,7 @@
 
 <div class="report-container">
   <div>
-    <h2 class="report-title">Let's how you did</h2>
+    <h2 class="report-title">Let's see how you did</h2>
     <p>Your score: {$score} / {$currentQuestions.length}</p>
   </div>
 

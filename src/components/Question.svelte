@@ -12,6 +12,7 @@
   import Button from "./Button.svelte";
   import TimeTracking from "./TimeTracking.svelte";
   import { get } from "svelte/store";
+  import QuestionCounter from "./QuestionCounter.svelte";
 
   let question = $currentQuestions[$currentIndex];
   let userInput = "";
@@ -89,7 +90,8 @@
   </p>
   <button on:click={() => currentCategory.set(null)}>Home</button>
 {:else if question}
-  <div>
+  <div class="question-container">
+    <QuestionCounter />
     <h2>{question.question}</h2>
     {#if get(currentCategory) === "All"}
       <TimeTracking />
@@ -128,6 +130,16 @@
 {/if}
 
 <style>
+  .question-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    height: 65%;
+    outline: 2px solid slateblue;
+  }
+
   img {
     max-inline-size: 100%;
   }
