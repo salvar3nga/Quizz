@@ -25,6 +25,16 @@ Running on: https://salvar3nga.github.io/Quizz/ it supports multiple categories,
 
 ---
 
+## 🐞 Found a bug, have a feature request or an answer is incorrect?
+
+If you discover a bug or have an idea for a new feature, please open an issue on the [GitHub Issues page](https://github.com/salvar3nga/Quizz/issues).
+
+- Describe the bug or feature clearly
+- Include steps to reproduce (if reporting a bug)
+- Screenshots or extra details are welcome!
+
+## Your feedback helps make this quiz better for everyone!
+
 ## 🚀 Getting Started
 
 ### 1. Clone the repository
@@ -46,3 +56,5 @@ Project will run on
 ```bash
 http://localhost:5173/
 ```
+
+---
