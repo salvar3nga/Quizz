@@ -8,6 +8,7 @@ import {
   TIMER_DURATION,
   MAX_QUESTIONS_PER_CATEGORY,
   MAX_QUESTIONS_IN_ALL_CATEGORIES,
+  CATEGORIES_TO_INCLUDE_ON_ALL_CATEGORIES,
 } from "@/constants/constants";
 
 export const currentCategory = writable<Category | null>(null);
@@ -33,12 +34,8 @@ export function startQuiz(category: Category, allQuestions: Question[]) {
   let selectedQuestions: Question[] = [];
 
   if (category === "All") {
-    const groupedCategories: Category[] = [
-      "General Knowledge",
-      "Geography",
-      "History",
-      "Science",
-    ];
+    const groupedCategories: Category[] =
+      CATEGORIES_TO_INCLUDE_ON_ALL_CATEGORIES;
     selectedQuestions = groupedCategories.flatMap((cat) => {
       const filtered = allQuestions.filter((q) => q.category === cat);
       return shuffleArray(filtered).slice(0, MAX_QUESTIONS_IN_ALL_CATEGORIES);

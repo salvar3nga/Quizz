@@ -2,13 +2,8 @@
   import { startQuiz } from "../store/quizStore";
   import { questions } from "../constants/questions";
   import type { Category } from "../constants/category";
-
-  const categories: Category[] = [
-    "General Knowledge",
-    "Geography",
-    "History",
-    "Science",
-  ];
+  import { CATEGORIES_TO_PLAY } from "../constants/constants";
+  const categories: Category[] = CATEGORIES_TO_PLAY;
 
   function onCategorySelect(category: Category) {
     startQuiz(category, questions);

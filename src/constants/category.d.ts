@@ -1,1 +1,8 @@
-export type Category = "General Knowledge" | "Geography" | "History" | "Science" | "All";
+export type Category =
+  | "General Knowledge"
+  | "Geography"
+  | "History"
+  | "Science"
+  | "All"
+  | "Sports"
+  | "IT";
