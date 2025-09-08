@@ -1,7 +1,7 @@
 import type { Question } from "./question";
 
 export const questions: Question[] = [
-  // GENERAL KNOWLEDGE
+  // ######## GENERAL KNOWLEDGE ######## //
   {
     type: "mcq",
     category: "General Knowledge",
@@ -17,6 +17,25 @@ export const questions: Question[] = [
     options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
     answer: "1",
     answerText: "Blue Whale",
+  },
+  {
+    type: "image",
+    category: "General Knowledge",
+    question: "Name the food!",
+    answer: [
+      "Kaiserschmarrn",
+      "Kaiserschmarren",
+      "Kaiserschmarrn",
+      "Kaiserschmarrn",
+    ],
+    imageUrl: "./food/kaiserschmarrn.jpg",
+  },
+  {
+    type: "image",
+    category: "General Knowledge",
+    question: "Name the food!",
+    answer: ["Shakshuka", "Shakshouka"],
+    imageUrl: "./food/shakshuka.jpg",
   },
   {
     type: "mcq",
@@ -190,7 +209,7 @@ export const questions: Question[] = [
     answer: "1",
     answerText: "Mars",
   },
-  // Science
+  // ######## Science ######## //
   {
     type: "mcq",
     category: "Science",
@@ -393,7 +412,7 @@ export const questions: Question[] = [
     question: "What is the unit of electrical resistance?",
     answer: ["Ohm", "ohm"],
   },
-  // HISTORY
+  // ######## HISTORY ######## //
   {
     type: "mcq",
     category: "History",
@@ -640,7 +659,21 @@ export const questions: Question[] = [
     answer: ["Vladimir Lenin", "Lenin", "V. Lenin", "Vladimir"],
     imageUrl: "./people/lenin.jpg",
   },
-  // GEOGRAPHY
+  {
+    type: "image",
+    category: "History",
+    question: "Who is on the photo?",
+    answer: ["Marie Curie", "Curie", "M. Curie", "Marie"],
+    imageUrl: "./people/marie_curie.jpg",
+  },
+  {
+    type: "image",
+    category: "History",
+    question: "Who is on the photo?",
+    answer: ["Idi Amin", "Amin", "I. Amin", "Idi"],
+    imageUrl: "./people/idi_amin.jpg",
+  },
+  // ######## GEOGRAPHY ######## //
   {
     type: "mcq",
     category: "Geography",
@@ -820,6 +853,36 @@ export const questions: Question[] = [
     category: "Geography",
     question: "What is the capital of Nord Rhein Westfalen?",
     answer: ["Düsseldorf", "Duesseldorf"],
+  },
+  {
+    type: "text",
+    category: "Geography",
+    question: "What is the capital of Brandenburg?",
+    answer: ["Potsdam"],
+  },
+  {
+    type: "text",
+    category: "Geography",
+    question: "What is the capital of Sachsen?",
+    answer: ["Dresden"],
+  },
+  {
+    type: "text",
+    category: "Geography",
+    question: "What is the capital of Sachsen-Anhalt?",
+    answer: ["Magdeburg"],
+  },
+  {
+    type: "text",
+    category: "Geography",
+    question: "What is the capital of Schleswig-Holstein?",
+    answer: ["Kiel"],
+  },
+  {
+    type: "text",
+    category: "Geography",
+    question: "What is the capital of Hessen?",
+    answer: ["Wiesbaden"],
   },
   {
     type: "text",
@@ -1061,7 +1124,7 @@ export const questions: Question[] = [
     imageUrl: "./cities/Porto.jpg",
   },
 
-  // SPORTS
+  // ######## SPORTS ######## //
   {
     type: "mcq",
     category: "Sports",
@@ -1198,10 +1261,18 @@ export const questions: Question[] = [
   {
     type: "mcq",
     category: "Sports",
-    question: "Which sport is known as the 'king of sports'?",
-    options: ["Soccer", "Basketball", "Cricket", "Tennis"],
-    answer: "0",
-    answerText: "Soccer",
+    question: "Which NFL Team goes by the name 'Bears'?",
+    options: ["Cleveland", "Chicago", "Cincinnati", "Tennessee"],
+    answer: "1",
+    answerText: "Chicago",
+  },
+  {
+    type: "mcq",
+    category: "Sports",
+    question: "Which NFL Team goes by the name 'Eagles'?",
+    options: ["Atlanta", "Philadelphia", "Arizona", "Carolina"],
+    answer: "1",
+    answerText: "Philadelphia",
   },
   {
     type: "mcq",
@@ -1264,8 +1335,15 @@ export const questions: Question[] = [
     question: "What is the official distance of a marathon race in kilometers?",
     answer: ["42.195", "42"],
   },
+  {
+    type: "image",
+    category: "Sports",
+    question: "Name the athlete!",
+    answer: ["Kevin Durant", "Durant", "KD", "Kevin"],
+    imageUrl: "./people/kd.jpg",
+  },
 
-  // IT
+  // ######## IT ######## //
   {
     type: "mcq",
     category: "IT",
