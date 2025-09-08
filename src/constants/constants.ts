@@ -3,8 +3,8 @@ import type { FinalMessages } from "./finalMessage";
 import { FinalMessageKey } from "./finalMessage";
 export const TIMER_DURATION = 20;
 export const MAX_QUESTIONS_PER_CATEGORY = 15;
-export const MAX_QUESTIONS_IN_ALL_CATEGORIES = 10; // takes max n questions for each category. Given n=10 and having 4 categories means a total of 40 questions
-export const LOW_TIME_WARNING_THRESHOLD_IN_SECONDS = 5; // time by which the timer bar turns red
+export const MAX_QUESTIONS_IN_ALL_CATEGORIES = 10; // takes max n questions for each category. For example given n=10 and having included 5 categories means a total of 50 questions
+export const LOW_TIME_WARNING_THRESHOLD_IN_SECONDS = 5; // time by which the timer bar turns red. Bar turns red when time <= your chosen number
 
 // Categories to include in the "All" category
 export const CATEGORIES_TO_INCLUDE_ON_ALL_CATEGORIES: Category[] = [
@@ -37,6 +37,8 @@ export const FINAL_MESSAGES: FinalMessages = {
     "The quiz is still intact. Try again to break it.",
     "You’ve set a new record for humility.",
     "If quizzes had a basement, you’d be in it.",
+    "Well, you did say you wanted a challenge!",
+    "If you were my nightmare, I wouldn't lose sleep one bit.",
   ],
   [FinalMessageKey.TWENTY]: [
     "You got a few! The rest are still hiding.",
@@ -49,6 +51,7 @@ export const FINAL_MESSAGES: FinalMessages = {
     "You’re on the scoreboard, but the crowd is silent.",
     "You’re not last, but you’re not first either.",
     "The quiz gave you a few freebies.",
+    "You you were my opponent, I know I wouldn't have to worry much",
   ],
   [FinalMessageKey.FIFTY]: [
     "You could flip a coin and do just as well.",
@@ -69,6 +72,7 @@ export const FINAL_MESSAGES: FinalMessages = {
     "You’re the reason quizzes exist.",
     "You’re one step away from legendary.",
     "You could run a quiz bootcamp.",
+    "Yow pretty good! Should I be worried 'bout dem abilities you've been showing?",
   ],
   [FinalMessageKey.HUNDRED]: [
     "100%! Are you even human?",

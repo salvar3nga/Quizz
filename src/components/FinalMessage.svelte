@@ -14,5 +14,7 @@
 <style>
   .message {
     font-size: 1.5rem;
+    color: #ff4000db;
+    font-weight: 900;
   }
 </style>

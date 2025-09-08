@@ -5,6 +5,14 @@ Running on: https://salvar3nga.github.io/Quizz/ it supports multiple categories,
 
 ---
 
+## Enjoyed this project?
+
+If you had fun or found this quiz useful, please consider leaving a ⭐ on the repository! Your support motivates further development.
+
+Many thanks.
+
+---
+
 ## ✨ Features
 
 - Current quiz categories: **General Knowledge**, **Geography**, **History**, **Science**
@@ -41,6 +49,7 @@ If you discover a bug or have an idea for a new feature, please open an issue on
 
 ```bash
 git clone https://github.com/salvar3nga/Quizz.git
+
 cd quizz
 ```
 
@@ -58,3 +67,11 @@ http://localhost:5173/
 ```
 
 ---
+
+### 3. Configuring it to your liking
+
+### The `constants.ts` file
+
+This file contains important configuration such as the total timer duration, which categories to include and message arrays used throughout the app, such as the final messages shown to users at the end of a quiz. You can customize these to your liking and need.
+
+Happy configuring ;)
