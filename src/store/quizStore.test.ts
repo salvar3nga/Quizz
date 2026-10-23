@@ -22,6 +22,7 @@ import {
   revealed,
   score,
   startQuiz,
+  streak,
   submitAnswer,
   timeLeft,
 } from "./quizStore";
@@ -213,6 +214,32 @@ describe("nextQuestion", () => {
 
     expect(get(currentIndex)).toBe(1);
     expect(get(quizFinished)).toBe(true);
+  });
+});
+
+describe("streak", () => {
+  it("counts correct answers in a row and resets on a miss or timeout", () => {
+    vi.useFakeTimers();
+    startQuiz("All", pool);
+    const answerAndNext = (isCorrect: boolean) => {
+      submitAnswer(isCorrect ? "C" : "A", isCorrect);
+      nextQuestion();
+    };
+
+    expect(get(streak)).toBe(0);
+    answerAndNext(true);
+    answerAndNext(true);
+    answerAndNext(true);
+    expect(get(streak)).toBe(3);
+
+    answerAndNext(false);
+    expect(get(streak)).toBe(0);
+
+    answerAndNext(true);
+    expect(get(streak)).toBe(1);
+
+    vi.advanceTimersByTime(TIMER_DURATION * 1000);
+    expect(get(streak)).toBe(0);
   });
 });
 

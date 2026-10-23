@@ -17,6 +17,7 @@
   import FinalMessage from "./FinalMessage.svelte";
   import Progress from "./Progress.svelte";
   import Icon from "./Icon.svelte";
+  import Confetti from "./Confetti.svelte";
 
   const allAnswers = $answers;
   const misses = allAnswers.filter((ans) => !ans.isCorrect);
@@ -25,6 +26,10 @@
   const COUNT_UP_IN_MS = 700;
   const COPIED_FOR_MS = 2000;
 
+  const isPerfect =
+    $currentQuestions.length > 0 && $score === $currentQuestions.length;
+
+  let scoreEl: HTMLElement;
   let shownScore = 0;
   let showRight = false;
 
@@ -94,11 +99,14 @@
 </script>
 
 <section class="report-container">
+  {#if isPerfect && scoreEl}
+    <Confetti anchor={scoreEl} delay={COUNT_UP_IN_MS - 100} />
+  {/if}
   <div class="card summary">
     <span class="kicker">{categoryLabel} · results</span>
 
     <div class="score">
-      <span class="display score-value">{shownScore}</span>
+      <span class="display score-value" bind:this={scoreEl}>{shownScore}</span>
       <span class="display score-total">/ {$currentQuestions.length}</span>
       {#if $isNewBest}
         <span

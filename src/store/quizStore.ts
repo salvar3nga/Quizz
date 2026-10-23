@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { writable, derived } from "svelte/store";
 import type { Question } from "@/constants/question";
 import type { Category } from "@/constants/category";
 import { get } from "svelte/store";
@@ -26,6 +26,13 @@ export const quizFinished = writable(false);
 export const answers = writable<Answer[]>([]);
 export const revealed = writable(false);
 export const isNewBest = writable(false);
+export const streak = derived(answers, ($answers) => {
+  let count = 0;
+  for (let i = $answers.length - 1; i >= 0 && $answers[i].isCorrect; i--) {
+    count++;
+  }
+  return count;
+});
 
 const ONE_SECOND_IN_MS = 1000;
 

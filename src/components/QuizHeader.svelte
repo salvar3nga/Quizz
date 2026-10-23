@@ -4,12 +4,15 @@
     currentCategory,
     score,
     answers,
+    streak,
     resetGame,
   } from "../store/quizStore";
+  import { fade } from "svelte/transition";
   import Progress from "./Progress.svelte";
   import Icon from "./Icon.svelte";
 
   const CONFIRM_QUIT_AFTER = 3;
+  const SHOW_STREAK_FROM = 3;
   const CONFIRM_WINDOW_IN_MS = 3000;
 
   let confirmingQuit = false;
@@ -52,12 +55,22 @@
       {/if}
     </div>
 
-    <span class="chip" aria-label="{$score} correct so far">
-      <span class="score-icon"
-        ><Icon name="check" size={14} strokeWidth={2.5} /></span
-      >
-      {$score}
-    </span>
+    <div class="chips">
+      {#if $streak >= SHOW_STREAK_FROM}
+        <span
+          class="chip"
+          aria-label="{$streak} correct in a row"
+          in:fade={{ duration: 150 }}
+          out:fade={{ duration: 100 }}>🔥 {$streak}</span
+        >
+      {/if}
+      <span class="chip" aria-label="{$score} correct so far">
+        <span class="score-icon"
+          ><Icon name="check" size={14} strokeWidth={2.5} /></span
+        >
+        {$score}
+      </span>
+    </div>
   </div>
 
   <Progress />
@@ -100,6 +113,11 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .chips {
+    display: flex;
+    gap: 6px;
   }
 
   .chip {
