@@ -11,7 +11,7 @@
     resetGame,
   } from "../store/quizStore";
   import { LOW_TIME_WARNING_THRESHOLD_IN_SECONDS } from "../constants/constants";
-  import { isTypedAnswerCorrect, getCorrectAnswer } from "../utils/answers";
+  import { checkTypedAnswer, getCorrectAnswer } from "../utils/answers";
   import { rise, focusOnMount } from "../utils/motion";
 
   import Input from "./Input.svelte";
@@ -23,6 +23,7 @@
 
   let userInput = "";
   let selected: number | null = null;
+  let closeSpelling: string | null = null;
   let input: Input;
 
   $: question = $currentQuestions[$currentIndex];
@@ -51,20 +52,23 @@
     );
   }
 
-  function checkTypedAnswer() {
+  function onTypedAnswer() {
     if ($revealed) return;
     if (!userInput.trim()) {
       input.nudge(4);
       return;
     }
 
-    const isCorrect = isTypedAnswerCorrect(question, userInput);
+    const result = checkTypedAnswer(question, userInput);
+    const isCorrect = result.status !== "wrong";
+    closeSpelling = result.status === "close" ? result.spelling! : null;
     submitAnswer(userInput.trim(), isCorrect);
     if (!isCorrect) input.nudge();
   }
 
   function goToNextQuestion() {
     selected = null;
+    closeSpelling = null;
     userInput = "";
     nextQuestion();
   }
@@ -165,7 +169,7 @@
               : status
                 ? "incorrect"
                 : null}
-            onCheckAnswer={checkTypedAnswer}
+            onCheckAnswer={onTypedAnswer}
           />
         {/if}
 
@@ -190,12 +194,18 @@
               <span class="result-text">
                 <strong>
                   {status === "correct"
-                    ? CORRECT_TITLES[$currentIndex % CORRECT_TITLES.length]
+                    ? closeSpelling
+                      ? "Close enough."
+                      : CORRECT_TITLES[$currentIndex % CORRECT_TITLES.length]
                     : status === "timeout"
                       ? "Time’s up."
                       : "Not quite."}
                 </strong>
-                {#if status !== "correct" && question.type !== "mcq"}
+                {#if status === "correct" && closeSpelling}
+                  <span class="result-answer"
+                    >It’s spelled <strong>{closeSpelling}</strong></span
+                  >
+                {:else if status !== "correct" && question.type !== "mcq"}
                   <span class="result-answer"
                     >Answer: <strong>{getCorrectAnswer(question)}</strong></span
                   >
