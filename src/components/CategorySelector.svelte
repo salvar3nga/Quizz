@@ -1,6 +1,11 @@
 <script lang="ts">
   import { startQuiz } from "../store/quizStore";
   import { bestScores } from "../store/bestScores";
+  import {
+    challenge,
+    acceptChallenge,
+    dismissChallenge,
+  } from "../store/challenge";
   import { questions } from "../constants/questions";
   import type { Category } from "../constants/category";
   import {
@@ -37,11 +42,43 @@
   );
 
   function onCategorySelect(category: Category) {
+    if (category === $challenge?.category) acceptChallenge();
     startQuiz(category, questions);
   }
 </script>
 
 <section class="home">
+  {#if $challenge && !$challenge.accepted}
+    {@const { category, score, total } = $challenge}
+    <div class="challenge rise" role="region" aria-label="Challenge">
+      <button
+        class="btn-quiet press dismiss"
+        aria-label="Dismiss challenge"
+        on:click={dismissChallenge}><Icon name="close" size={18} /></button
+      >
+      <span class="challenge-icon"><Icon name={CATEGORY_ICONS[category]} size={22} /></span>
+      <p class="challenge-text">
+        <span
+          >A friend got <strong>{score}/{total}</strong>
+          {category === "All" ? "across all categories" : `in ${category}`}.</span
+        >
+        <span class="display challenge-dare">Can you beat them?</span>
+        {#if category === "All"}
+          <span class="challenge-note"
+            >Timed: {allCount} questions, {TIMER_DURATION} seconds each.</span
+          >
+        {/if}
+      </p>
+      <button
+        class="btn btn-accent press"
+        on:click={() => onCategorySelect(category)}
+      >
+        Take the challenge
+        <Icon name="arrowRight" size={18} />
+      </button>
+    </div>
+  {/if}
+
   <div class="intro">
     <h1 class="display">Pick your poison.</h1>
     <p>
@@ -120,6 +157,56 @@
     max-width: 46ch;
     font-size: 18px;
     color: var(--muted);
+  }
+
+  .challenge {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    margin-top: 12px;
+    padding: 20px;
+    border-radius: 20px;
+    border: 2px solid var(--accent);
+    background: var(--card);
+  }
+
+  .challenge-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--soft);
+  }
+
+  .challenge-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    padding-right: 32px;
+    font-size: 17px;
+  }
+
+  .challenge-dare {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.15;
+  }
+
+  .challenge-note {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .dismiss {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 8px;
   }
 
   .grid {

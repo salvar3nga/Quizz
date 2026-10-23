@@ -15,8 +15,9 @@
   import {
     buildChallenge,
     buildShareText,
-    SHARE_URL,
+    challengeUrl,
   } from "../utils/shareResult";
+  import { challenge } from "../store/challenge";
 
   import FinalMessage from "./FinalMessage.svelte";
   import Progress from "./Progress.svelte";
@@ -97,7 +98,12 @@
       $currentQuestions.length,
     );
     try {
-      await navigator.share({ text, url: SHARE_URL });
+      const url = challengeUrl({
+        category: $currentCategory!,
+        score: $score,
+        total: $currentQuestions.length,
+      });
+      await navigator.share({ text, url });
       return true;
     } catch (error) {
       // dismissing the sheet is a choice, not a failure
@@ -114,6 +120,14 @@
   }
 
   onDestroy(() => clearTimeout(copiedTimeout));
+
+  $: rival =
+    $challenge?.accepted && $challenge.category === $currentCategory
+      ? $challenge
+      : null;
+  $: verdict = !rival
+    ? null
+    : Math.sign($score * rival.total - rival.score * $currentQuestions.length);
 
   function playAgain() {
     if ($currentCategory) startQuiz($currentCategory, questions);
@@ -139,6 +153,22 @@
         >
       {/if}
     </div>
+
+    {#if rival && verdict !== null}
+      <p
+        class="verdict rise"
+        class:verdict-win={verdict > 0}
+        style:animation-delay="{prefersReducedMotion() ? 0 : COUNT_UP_IN_MS}ms"
+      >
+        {#if verdict > 0}
+          You beat your friend’s <strong>{rival.score}/{rival.total}</strong>.
+        {:else if verdict === 0}
+          Tied with your friend at <strong>{rival.score}/{rival.total}</strong>.
+        {:else}
+          Your friend’s <strong>{rival.score}/{rival.total}</strong> wins this time.
+        {/if}
+      </p>
+    {/if}
 
     <Progress showCurrent={false} />
     <FinalMessage />
@@ -281,6 +311,17 @@
     font-size: 14px;
     font-weight: 700;
     white-space: nowrap;
+  }
+
+  .verdict {
+    margin: -8px 0 0;
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .verdict-win {
+    color: var(--good);
   }
 
   .actions {
