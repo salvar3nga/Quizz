@@ -12,7 +12,11 @@
   import { questions } from "../constants/questions";
   import { getCorrectAnswer } from "../utils/answers";
   import { prefersReducedMotion } from "../utils/motion";
-  import { buildShareText } from "../utils/shareResult";
+  import {
+    buildChallenge,
+    buildShareText,
+    SHARE_URL,
+  } from "../utils/shareResult";
 
   import FinalMessage from "./FinalMessage.svelte";
   import Progress from "./Progress.svelte";
@@ -33,14 +37,16 @@
   let shownScore = 0;
   let showRight = false;
 
+  const canShare =
+    typeof navigator !== "undefined" && typeof navigator.share === "function";
+  const canCopy =
+    typeof navigator !== "undefined" &&
+    typeof navigator.clipboard?.writeText === "function";
+  // the share sheet on phones, the clipboard on desktop where share support is patchy
+  const isTouch =
+    typeof window !== "undefined" && window.matchMedia("(hover: none)").matches;
   const shareMode =
-    typeof navigator === "undefined"
-      ? null
-      : typeof navigator.clipboard?.writeText === "function"
-        ? "copy"
-        : typeof navigator.share === "function"
-          ? "share"
-          : null;
+    canShare && (isTouch || !canCopy) ? "share" : canCopy ? "copy" : null;
   let copied = false;
   let copiedTimeout: ReturnType<typeof setTimeout> | undefined;
 
@@ -67,27 +73,43 @@
     return () => cancelAnimationFrame(frame);
   });
 
-  async function shareResult() {
+  async function copyChallenge() {
     const text = buildShareText(
-      categoryLabel ?? "",
+      $currentCategory!,
       allAnswers,
       $currentQuestions.length,
     );
-
-    if (shareMode === "copy") {
-      try {
-        await navigator.clipboard.writeText(text);
-        copied = true;
-        clearTimeout(copiedTimeout);
-        copiedTimeout = setTimeout(() => (copied = false), COPIED_FOR_MS);
-        return;
-      } catch {}
+    try {
+      await navigator.clipboard.writeText(text);
+      copied = true;
+      clearTimeout(copiedTimeout);
+      copiedTimeout = setTimeout(() => (copied = false), COPIED_FOR_MS);
+      return true;
+    } catch {
+      return false;
     }
+  }
 
-    if (typeof navigator.share === "function") {
-      try {
-        await navigator.share({ text });
-      } catch {}
+  async function shareChallenge() {
+    const text = buildChallenge(
+      $currentCategory!,
+      allAnswers,
+      $currentQuestions.length,
+    );
+    try {
+      await navigator.share({ text, url: SHARE_URL });
+      return true;
+    } catch (error) {
+      // dismissing the sheet is a choice, not a failure
+      return (error as DOMException)?.name === "AbortError";
+    }
+  }
+
+  async function challengeFriend() {
+    if (shareMode === "share") {
+      if (!(await shareChallenge()) && canCopy) await copyChallenge();
+    } else if (!(await copyChallenge()) && canShare) {
+      await shareChallenge();
     }
   }
 
@@ -127,16 +149,14 @@
         Play again
       </button>
       {#if shareMode}
-        <button class="btn btn-ghost press share" on:click={shareResult}>
+        <button class="btn btn-ghost press share" on:click={challengeFriend}>
           <span class="share-icon" class:swapped={copied}>
             <Icon name={shareMode === "copy" ? "copy" : "share"} size={18} />
             <Icon name="check" size={18} strokeWidth={2.25} />
           </span>
           <span class="share-label" class:swapped={copied} aria-live="polite">
-            <span aria-hidden={copied}
-              >{shareMode === "copy" ? "Copy result" : "Share result"}</span
-            >
-            <span aria-hidden={!copied}>Copied</span>
+            <span aria-hidden={copied}>Challenge a friend</span>
+            <span aria-hidden={!copied}>Copied, now paste it</span>
           </span>
         </button>
       {/if}
