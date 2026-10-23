@@ -16,7 +16,7 @@ Many thanks.
 ## ✨ Features
 
 - Current quiz categories: **General Knowledge**, **Geography**, **History**, **Science**
-- **Play single category** or **Play all categories** (10 random questions per category)
+- **Play single category** or **Play all categories** (5 random questions per category)
 - Question types:
   - ✅ Multiple choice
   - ✍️ Text input (typed answer)

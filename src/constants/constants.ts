@@ -3,7 +3,7 @@ import type { FinalMessages } from "./finalMessage";
 import { FinalMessageKey } from "./finalMessage";
 export const TIMER_DURATION = 20;
 export const MAX_QUESTIONS_PER_CATEGORY = 15;
-export const MAX_QUESTIONS_IN_ALL_CATEGORIES = 10; // takes max n questions for each category. For example given n=10 and having included 5 categories means a total of 50 questions
+export const MAX_QUESTIONS_IN_ALL_CATEGORIES = 5; // takes max n questions for each category. For example given n=5 and having included 5 categories means a total of 25 questions
 export const LOW_TIME_WARNING_THRESHOLD_IN_SECONDS = 5; // time by which the timer bar turns red. Bar turns red when time <= your chosen number
 
 // Categories to include in the "All" category
