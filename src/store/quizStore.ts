@@ -47,19 +47,16 @@ export function startQuiz(category: Category, allQuestions: Question[]) {
     selectedQuestions = allQuestions.filter((q) => q.category === category);
     selectedQuestions = shuffleArray(selectedQuestions).slice(
       0,
-      MAX_QUESTIONS_PER_CATEGORY
+      MAX_QUESTIONS_PER_CATEGORY,
     );
   }
 
-  const randomizedQuestions = selectedQuestions;
+  const randomizedQuestions = selectedQuestions.map((q) => {
+    if (q.type !== "mcq" || !q.options) return { ...q };
 
-  randomizedQuestions.forEach((q) => {
-    if (q.type === "mcq" && q.options) {
-      q.options = shuffleArray(q.options);
-
-      const correct = q.options.findIndex((opt) => opt === q.answerText);
-      q.answer = String(correct);
-    }
+    const options = shuffleArray(q.options);
+    const correct = options.findIndex((opt) => opt === q.answerText);
+    return { ...q, options, answer: String(correct) };
   });
 
   currentQuestions.set(randomizedQuestions);
