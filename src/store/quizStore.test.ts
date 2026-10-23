@@ -9,11 +9,13 @@ import {
   MAX_QUESTIONS_PER_CATEGORY,
   TIMER_DURATION,
 } from "@/constants/constants";
+import { bestScores } from "./bestScores";
 import {
   answers,
   currentCategory,
   currentIndex,
   currentQuestions,
+  isNewBest,
   nextQuestion,
   quizFinished,
   resetGame,
@@ -211,6 +213,31 @@ describe("nextQuestion", () => {
 
     expect(get(currentIndex)).toBe(1);
     expect(get(quizFinished)).toBe(true);
+  });
+});
+
+describe("best score", () => {
+  function playRound(correct: boolean[]) {
+    startQuiz("IT", makeQuestions("IT", correct.length));
+    for (const isCorrect of correct) {
+      submitAnswer(isCorrect ? "C" : "A", isCorrect);
+      nextQuestion();
+    }
+  }
+
+  it("records the score when a round finishes and flags a beaten best", () => {
+    bestScores.set({});
+
+    playRound([true, false, false]);
+    expect(get(bestScores).IT).toEqual({ score: 1, total: 3 });
+    expect(get(isNewBest)).toBe(false);
+
+    playRound([true, true, false]);
+    expect(get(bestScores).IT).toEqual({ score: 2, total: 3 });
+    expect(get(isNewBest)).toBe(true);
+
+    startQuiz("IT", makeQuestions("IT", 3));
+    expect(get(isNewBest)).toBe(false);
   });
 });
 

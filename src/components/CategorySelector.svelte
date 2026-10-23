@@ -1,5 +1,6 @@
 <script lang="ts">
   import { startQuiz } from "../store/quizStore";
+  import { bestScores } from "../store/bestScores";
   import { questions } from "../constants/questions";
   import type { Category } from "../constants/category";
   import {
@@ -62,6 +63,10 @@
         <span class="category-text">
           <span class="category-name">{category}</span>
           <span class="category-count">{count} questions</span>
+          {#if $bestScores[category]}
+            {@const best = $bestScores[category]}
+            <span class="category-best">Best {best.score}/{best.total}</span>
+          {/if}
         </span>
         <span class="category-arrow"><Icon name="arrowRight" size={18} /></span>
       </button>
@@ -79,6 +84,11 @@
       <span class="bring-it-on-meta">
         {allCount} questions from every category, {TIMER_DURATION} seconds each
       </span>
+      {#if $bestScores.All}
+        <span class="bring-it-on-best"
+          >Best {$bestScores.All.score}/{$bestScores.All.total}</span
+        >
+      {/if}
     </span>
     <Icon name="arrowRight" size={22} />
   </button>
@@ -159,6 +169,12 @@
     color: var(--muted);
   }
 
+  .category-best {
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
   .category-arrow {
     position: absolute;
     top: 20px;
@@ -209,6 +225,13 @@
   .bring-it-on-meta {
     font-size: 15px;
     font-weight: 500;
+  }
+
+  .bring-it-on-best {
+    margin-top: 2px;
+    font-size: 13px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
   }
 
   @media (max-width: 600px) {

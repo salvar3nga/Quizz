@@ -5,6 +5,7 @@
     score,
     currentQuestions,
     currentCategory,
+    isNewBest,
     startQuiz,
     resetGame,
   } from "../store/quizStore";
@@ -19,6 +20,8 @@
   const allAnswers = $answers;
   const misses = allAnswers.filter((ans) => !ans.isCorrect);
   const rights = allAnswers.filter((ans) => ans.isCorrect);
+
+  const COUNT_UP_IN_MS = 700;
 
   let shownScore = 0;
   let showRight = false;
@@ -36,7 +39,7 @@
     const start = performance.now();
     let frame = 0;
     const step = (now: number) => {
-      const progress = Math.min(1, (now - start) / 700);
+      const progress = Math.min(1, (now - start) / COUNT_UP_IN_MS);
       shownScore = Math.round(target * (1 - (1 - progress) ** 3));
       if (progress < 1) frame = requestAnimationFrame(step);
     };
@@ -57,6 +60,13 @@
     <div class="score">
       <span class="display score-value">{shownScore}</span>
       <span class="display score-total">/ {$currentQuestions.length}</span>
+      {#if $isNewBest}
+        <span
+          class="new-best rise"
+          style:animation-delay="{prefersReducedMotion() ? 0 : COUNT_UP_IN_MS - 100}ms"
+          >New best!</span
+        >
+      {/if}
     </div>
 
     <Progress showCurrent={false} />
@@ -142,6 +152,7 @@
 
   .score {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
     gap: 10px;
   }
@@ -157,6 +168,17 @@
     font-size: 36px;
     font-weight: 700;
     color: var(--muted);
+  }
+
+  .new-best {
+    align-self: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
   }
 
   .actions {

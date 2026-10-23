@@ -3,6 +3,7 @@ import type { Question } from "@/constants/question";
 import type { Category } from "@/constants/category";
 import { get } from "svelte/store";
 import { shuffleArray } from "@/utils/shuffle";
+import { recordScore } from "./bestScores";
 
 import {
   TIMER_DURATION,
@@ -23,8 +24,8 @@ export const currentIndex = writable(0);
 export const score = writable(0);
 export const quizFinished = writable(false);
 export const answers = writable<Answer[]>([]);
-// true while the current question shows its result and waits for "Next"
 export const revealed = writable(false);
+export const isNewBest = writable(false);
 
 const ONE_SECOND_IN_MS = 1000;
 
@@ -65,6 +66,7 @@ export function startQuiz(category: Category, allQuestions: Question[]) {
   quizFinished.set(false);
   answers.set([]);
   revealed.set(false);
+  isNewBest.set(false);
   startTimer();
 }
 
@@ -113,6 +115,10 @@ export function nextQuestion() {
     startTimer();
   } else {
     stopTimer();
+    const category = get(currentCategory);
+    if (category) {
+      isNewBest.set(recordScore(category, get(score), questions.length));
+    }
     quizFinished.set(true);
   }
 }
@@ -126,4 +132,5 @@ export function resetGame() {
   quizFinished.set(false);
   answers.set([]);
   revealed.set(false);
+  isNewBest.set(false);
 }
