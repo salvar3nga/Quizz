@@ -7,49 +7,46 @@
   import { timeLeft } from "../store/quizStore";
 </script>
 
-<div class="timer-container">
+<div class="timer" aria-hidden="true">
   <div
-    class={$timeLeft <= LOW_TIME_WARNING_THRESHOLD_IN_SECONDS
-      ? "low-time timer-bar"
-      : "timer-bar"}
-    style="width: {($timeLeft / TIMER_DURATION) * 100}%"
+    class="timer-bar"
+    class:low-time={$timeLeft <= LOW_TIME_WARNING_THRESHOLD_IN_SECONDS}
+    class:refill={$timeLeft === TIMER_DURATION}
+    style:transform="scaleX({$timeLeft / TIMER_DURATION})"
   ></div>
-  <span
-    class={$timeLeft <= LOW_TIME_WARNING_THRESHOLD_IN_SECONDS
-      ? "low-time-counter timer-counter"
-      : "timer-counter"}>{$timeLeft}s</span
-  >
 </div>
 
 <style>
-  .timer-container {
-    margin-bottom: 1.5rem;
-    width: 100%;
-    background-color: #f1f1f1;
-    height: 1rem;
-    border-radius: 5%;
-    position: relative;
-    width: 50%;
+  .timer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--soft);
+  }
 
+  .timer-bar {
+    height: 100%;
+    background: var(--accent);
+    transform-origin: left center;
+    transition:
+      transform 1s linear,
+      background-color 200ms ease;
+  }
+
+  /* A new question refills the bar instantly instead of sweeping backwards */
+  .refill {
+    transition: none;
+  }
+
+  .low-time {
+    background: var(--bad);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
     .timer-bar {
-      background-color: rgba(0, 187, 255, 0.462);
-      height: 1rem;
-      border-radius: 5%;
-    }
-
-    .timer-counter {
-      position: absolute;
-      right: 0;
-      top: 0;
-      transform: translateY(-100%);
-      font-size: 0.75rem;
-      color: rgb(0, 187, 255);
-    }
-    .low-time-counter {
-      color: #fa2121;
-    }
-    .low-time {
-      background-color: #dc2626;
+      transition: background-color 200ms ease;
     }
   }
 </style>

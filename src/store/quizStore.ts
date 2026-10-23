@@ -11,18 +11,20 @@ import {
   CATEGORIES_TO_INCLUDE_ON_ALL_CATEGORIES,
 } from "@/constants/constants";
 
+export type Answer = {
+  question: Question;
+  userAnswer: string | null; // null when the timer ran out
+  isCorrect: boolean;
+};
+
 export const currentCategory = writable<Category | null>(null);
 export const currentQuestions = writable<Question[]>([]);
 export const currentIndex = writable(0);
 export const score = writable(0);
 export const quizFinished = writable(false);
-export const answers = writable<
-  {
-    question: Question;
-    userAnswer: string | null;
-    isCorrect: boolean;
-  }[]
->([]);
+export const answers = writable<Answer[]>([]);
+// true while the current question shows its result and waits for "Next"
+export const revealed = writable(false);
 
 const ONE_SECOND_IN_MS = 1000;
 
@@ -65,55 +67,66 @@ export function startQuiz(category: Category, allQuestions: Question[]) {
   score.set(0);
   quizFinished.set(false);
   answers.set([]);
-  resetTimer();
+  revealed.set(false);
+  startTimer();
 }
 
-export function resetTimer() {
+function startTimer() {
+  stopTimer();
   if (get(currentCategory) !== "All") return;
 
   timeLeft.set(TIMER_DURATION);
-  if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(() => {
-    timeLeft.update((n) => {
-      if (n <= 1) {
-        nextQuestion();
-        return TIMER_DURATION;
-      }
-      return n - 1;
-    });
+    if (get(timeLeft) <= 1) {
+      timeLeft.set(0);
+      submitAnswer(null, false);
+      return;
+    }
+    timeLeft.update((n) => n - 1);
   }, ONE_SECOND_IN_MS);
+}
+
+function stopTimer() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = null;
+}
+
+export function submitAnswer(userAnswer: string | null, isCorrect: boolean) {
+  if (get(revealed)) return;
+
+  const question = get(currentQuestions)[get(currentIndex)];
+  stopTimer();
+
+  if (isCorrect) {
+    score.update((n) => n + 1);
+  }
+
+  answers.update((arr) => [...arr, { question, userAnswer, isCorrect }]);
+  revealed.set(true);
 }
 
 export function nextQuestion() {
   const index = get(currentIndex);
   const questions = get(currentQuestions);
 
+  revealed.set(false);
+
   if (index + 1 < questions.length) {
     currentIndex.set(index + 1);
-    resetTimer();
+    startTimer();
   } else {
+    stopTimer();
     quizFinished.set(true);
-    if (timerInterval) clearInterval(timerInterval);
   }
 }
 
-export function recordAnswer(
-  question: Question,
-  userAnswer: string,
-  isCorrect: boolean
-) {
-  answers.update((arr) => [
-    ...arr,
-    { question, userAnswer, isCorrect: isCorrect },
-  ]);
-}
-
 export function resetGame() {
+  stopTimer();
   currentCategory.set(null);
   currentQuestions.set([]);
   currentIndex.set(0);
   score.set(0);
   quizFinished.set(false);
   answers.set([]);
-  resetTimer();
+  revealed.set(false);
 }

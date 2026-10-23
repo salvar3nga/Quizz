@@ -1,74 +1,120 @@
 <script lang="ts">
+  import { focusOnMount, shake } from "../utils/motion";
+
   export let typedAnswer = "";
   export let onCheckAnswer: () => void;
+  export let disabled = false;
+  export let status: "correct" | "incorrect" | null = null;
+
+  let field: HTMLDivElement;
+
+  export function nudge(amplitude = 6) {
+    shake(field, amplitude);
+  }
 </script>
 
 <div class="form-control">
-  <input
-    type="value"
-    id="answer"
-    required
-    bind:value={typedAnswer}
-    on:keydown={(e) => e.key === "Enter" && onCheckAnswer()}
-  />
-  <label for="answer">
-    <span style="transition-delay:0ms">Y</span>
-    <span style="transition-delay:50ms">o</span>
-    <span style="transition-delay:100ms">u</span>
-    <span style="transition-delay:150ms">r</span>
-    <span style="transition-delay:200ms"></span>
-    <span style="transition-delay:250ms">A</span>
-    <span style="transition-delay:300ms">n</span>
-    <span style="transition-delay:350ms">s</span>
-    <span style="transition-delay:400ms">w</span>
-    <span style="transition-delay:450ms">e</span>
-    <span style="transition-delay:500ms">r</span>
-  </label>
+  <label for="answer">Your answer</label>
+  <div
+    bind:this={field}
+    class="field"
+    class:correct={status === "correct"}
+    class:incorrect={status === "incorrect"}
+  >
+    <input
+      id="answer"
+      type="text"
+      autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
+      placeholder="Type it here"
+      readonly={disabled}
+      bind:value={typedAnswer}
+      use:focusOnMount
+      on:keydown={(e) => {
+        if (e.key !== "Enter") return;
+        e.preventDefault();
+        onCheckAnswer();
+      }}
+    />
+    {#if !disabled}
+      <button class="btn btn-accent press check" on:click={onCheckAnswer}>
+        Check <span class="kbd" aria-hidden="true">↵</span>
+      </button>
+    {/if}
+  </div>
+  {#if !disabled}
+    <span class="hint">Not case-sensitive. Accents optional.</span>
+  {/if}
 </div>
 
 <style>
   .form-control {
-    position: relative;
-    margin: 20px 0 40px;
-    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
-  .form-control input {
-    background-color: transparent;
+  label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 6px 6px 18px;
+    border-radius: 16px;
+    border: 1.5px solid var(--line);
+    background: var(--card);
+    transition:
+      border-color 150ms ease,
+      box-shadow 150ms ease,
+      background-color 150ms ease;
+  }
+
+  .field:focus-within {
+    border-color: var(--ink);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+
+  .field.correct {
+    border-color: var(--good);
+    background: var(--good-bg);
+    box-shadow: none;
+  }
+
+  .field.incorrect {
+    border-color: var(--bad);
+    background: var(--bad-bg);
+    box-shadow: none;
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    height: 52px;
     border: 0;
-    border-bottom: 2px #fff solid;
-    display: block;
-    width: 100%;
-    padding: 15px 0;
-    font-size: 18px;
-    color: #fff;
-    font-size: 1.5rem;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-size: 20px;
+    font-weight: 500;
+    outline: none;
   }
 
-  .form-control input:focus,
-  .form-control input:valid {
-    outline: 0;
-    border-bottom-color: lightblue;
+  input::placeholder {
+    color: var(--muted);
   }
 
-  .form-control label {
-    position: absolute;
-    top: 15px;
-    left: 0;
-    pointer-events: none;
+  .check {
+    padding: 0 14px 0 18px;
   }
 
-  .form-control label span {
-    display: inline-block;
-    font-size: 18px;
-    min-width: 5px;
-    color: #fff;
-    transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  }
-
-  .form-control input:focus + label span,
-  .form-control input:valid + label span {
-    color: lightblue;
-    transform: translateY(-30px);
+  .hint {
+    font-size: 13px;
+    color: var(--muted);
   }
 </style>

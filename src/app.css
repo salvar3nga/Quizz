@@ -1,11 +1,28 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --bg: #eef0f3;
+  --card: #ffffff;
+  --ink: #15171c;
+  --muted: #555c6b;
+  --line: #dce0e6;
+  --soft: #f3f4f7;
+  --good: #0a7a4a;
+  --good-bg: #e2f3ea;
+  --bad: #c2362f;
+  --bad-bg: #fbe8e6;
+  --accent: #ff5a1f;
+  --on-accent: #15171c;
+  --shadow: 0 1px 2px rgba(21, 23, 28, 0.05),
+    0 16px 40px -18px rgba(21, 23, 28, 0.18);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+  font-family: "Inter", system-ui, Helvetica, Arial, sans-serif;
+  font-size: 16px;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: var(--ink);
+  background-color: var(--bg);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,59 +30,224 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1014;
+    --card: #171a20;
+    --ink: #f2f3f5;
+    --muted: #9ba2af;
+    --line: #2a2f38;
+    --soft: #1f232a;
+    --good: #4cd997;
+    --good-bg: #0f2e20;
+    --bad: #ff7b72;
+    --bad-bg: #3a1714;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 16px 40px -18px rgba(0, 0, 0, 0.6);
+  }
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-.card {
-  padding: 2em;
+body {
+  margin: 0;
 }
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem 2rem 0 2rem;
-  text-align: center;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+}
+
+a {
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--line);
+}
+
+a:hover {
+  color: var(--ink);
+  text-decoration-color: var(--ink);
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  font: inherit;
+  color: inherit;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.display {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Anything pressable gets press feedback */
+.press {
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 150ms ease,
+    border-color 150ms ease,
+    opacity 200ms ease,
+    color 150ms ease;
+}
+
+.press:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 20px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: var(--line);
+}
+
+.btn-quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: var(--soft);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.btn-accent .kbd {
+  background: rgba(21, 23, 28, 0.08);
+  border-color: rgba(21, 23, 28, 0.2);
+  color: var(--on-accent);
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(20px, 4vw, 40px);
+  border-radius: 24px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  color: var(--card);
+  animation: pop 240ms var(--ease-out) both;
+}
+
+.mark-lg {
+  width: 32px;
+  height: 32px;
+}
+
+.mark-good {
+  background: var(--good);
+}
+
+.mark-bad {
+  background: var(--bad);
+}
+
+.rise {
+  animation: rise 380ms var(--ease-out) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-  a:hover {
-    color: #747bff;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
   }
-  button {
-    background-color: #f9f9f9;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-accent:hover {
+    background: color-mix(in oklab, var(--accent) 90%, #000);
+  }
+
+  .btn-ghost:hover {
+    background: var(--soft);
+  }
+
+  .btn-quiet:hover {
+    color: var(--ink);
+    background: var(--soft);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .mark {
+    animation-name: fade;
+  }
+
+  .press:not(:disabled):active {
+    transform: none;
   }
 }

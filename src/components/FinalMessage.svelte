@@ -4,17 +4,19 @@
   import { convertScoreToMessage } from "@/utils/converteScoreToMessage";
   import { shuffleArray } from "../utils/shuffle";
 
-  $: percentage = getPercentage($score, $currentQuestions.length);
+  // Picked once so the message doesn't change on re-render
+  const percentage = getPercentage($score, $currentQuestions.length);
+  const message = shuffleArray(convertScoreToMessage(percentage))[0];
 </script>
 
-<div class="message">
-  {shuffleArray(convertScoreToMessage(percentage))[0]}
-</div>
+<p class="display message">{message}</p>
 
 <style>
   .message {
-    font-size: 1.5rem;
-    color: #ff4000db;
-    font-weight: 900;
+    margin: 0;
+    max-width: 32ch;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.25;
   }
 </style>
