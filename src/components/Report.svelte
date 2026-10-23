@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import {
     answers,
     score,
@@ -12,6 +12,7 @@
   import { questions } from "../constants/questions";
   import { getCorrectAnswer } from "../utils/answers";
   import { prefersReducedMotion } from "../utils/motion";
+  import { buildShareText } from "../utils/shareResult";
 
   import FinalMessage from "./FinalMessage.svelte";
   import Progress from "./Progress.svelte";
@@ -22,11 +23,24 @@
   const rights = allAnswers.filter((ans) => ans.isCorrect);
 
   const COUNT_UP_IN_MS = 700;
+  const COPIED_FOR_MS = 2000;
 
   let shownScore = 0;
   let showRight = false;
 
-  $: categoryLabel = $currentCategory === "All" ? "All categories" : $currentCategory;
+  const shareMode =
+    typeof navigator === "undefined"
+      ? null
+      : typeof navigator.clipboard?.writeText === "function"
+        ? "copy"
+        : typeof navigator.share === "function"
+          ? "share"
+          : null;
+  let copied = false;
+  let copiedTimeout: ReturnType<typeof setTimeout> | undefined;
+
+  $: categoryLabel =
+    $currentCategory === "All" ? "All categories" : $currentCategory;
 
   // Count the score up from 0
   onMount(() => {
@@ -48,6 +62,32 @@
     return () => cancelAnimationFrame(frame);
   });
 
+  async function shareResult() {
+    const text = buildShareText(
+      categoryLabel ?? "",
+      allAnswers,
+      $currentQuestions.length,
+    );
+
+    if (shareMode === "copy") {
+      try {
+        await navigator.clipboard.writeText(text);
+        copied = true;
+        clearTimeout(copiedTimeout);
+        copiedTimeout = setTimeout(() => (copied = false), COPIED_FOR_MS);
+        return;
+      } catch {}
+    }
+
+    if (typeof navigator.share === "function") {
+      try {
+        await navigator.share({ text });
+      } catch {}
+    }
+  }
+
+  onDestroy(() => clearTimeout(copiedTimeout));
+
   function playAgain() {
     if ($currentCategory) startQuiz($currentCategory, questions);
   }
@@ -63,8 +103,9 @@
       {#if $isNewBest}
         <span
           class="new-best rise"
-          style:animation-delay="{prefersReducedMotion() ? 0 : COUNT_UP_IN_MS - 100}ms"
-          >New best!</span
+          style:animation-delay="{prefersReducedMotion()
+            ? 0
+            : COUNT_UP_IN_MS - 100}ms">New best!</span
         >
       {/if}
     </div>
@@ -77,7 +118,23 @@
         <Icon name="replay" size={18} />
         Play again
       </button>
-      <button class="btn btn-ghost press" on:click={resetGame}>Change category</button>
+      {#if shareMode}
+        <button class="btn btn-ghost press share" on:click={shareResult}>
+          <span class="share-icon" class:swapped={copied}>
+            <Icon name={shareMode === "copy" ? "copy" : "share"} size={18} />
+            <Icon name="check" size={18} strokeWidth={2.25} />
+          </span>
+          <span class="share-label" class:swapped={copied} aria-live="polite">
+            <span aria-hidden={copied}
+              >{shareMode === "copy" ? "Copy result" : "Share result"}</span
+            >
+            <span aria-hidden={!copied}>Copied</span>
+          </span>
+        </button>
+      {/if}
+      <button class="btn btn-ghost press" on:click={resetGame}
+        >Change category</button
+      >
     </div>
   </div>
 
@@ -85,7 +142,10 @@
     <section class="group">
       <h3 class="group-title">Missed · {misses.length}</h3>
       {#each misses as ans, i}
-        <div class="answer-card rise" style:animation-delay="{120 + Math.min(i, 10) * 50}ms">
+        <div
+          class="answer-card rise"
+          style:animation-delay="{120 + Math.min(i, 10) * 50}ms"
+        >
           {#if ans.question.type === "image"}
             <img src={ans.question.imageUrl} alt="" class="answer-image" />
           {/if}
@@ -95,9 +155,16 @@
               {#if ans.userAnswer === null}
                 <span>Ran out of time</span>
               {:else}
-                <span>You said <s class="answer-incorrect">{ans.userAnswer}</s></span>
+                <span
+                  >You said <s class="answer-incorrect">{ans.userAnswer}</s
+                  ></span
+                >
               {/if}
-              <span>Answer <strong class="answer-correct">{getCorrectAnswer(ans.question)}</strong></span>
+              <span
+                >Answer <strong class="answer-correct"
+                  >{getCorrectAnswer(ans.question)}</strong
+                ></span
+              >
             </span>
           </div>
         </div>
@@ -115,13 +182,20 @@
         on:click={() => (showRight = !showRight)}
       >
         Got right · {rights.length}
-        <span class="chevron" class:open={showRight}><Icon name="chevronDown" size={16} /></span>
+        <span class="chevron" class:open={showRight}
+          ><Icon name="chevronDown" size={16} /></span
+        >
       </button>
 
       {#if showRight}
         {#each rights as ans, i}
-          <div class="answer-card compact rise" style:animation-delay="{Math.min(i, 10) * 40}ms">
-            <span class="mark mark-good"><Icon name="check" size={14} strokeWidth={2.5} /></span>
+          <div
+            class="answer-card compact rise"
+            style:animation-delay="{Math.min(i, 10) * 40}ms"
+          >
+            <span class="mark mark-good"
+              ><Icon name="check" size={14} strokeWidth={2.5} /></span
+            >
             <span class="answer-question">{ans.question.question}</span>
             <span class="answer-given">{ans.userAnswer}</span>
           </div>
@@ -185,6 +259,52 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+  }
+
+  .share-icon,
+  .share-label {
+    display: inline-grid;
+  }
+
+  .share-icon > :global(*),
+  .share-label > * {
+    grid-area: 1 / 1;
+    transition:
+      opacity 150ms ease,
+      transform 200ms var(--ease-out);
+  }
+
+  .share-label > :last-child,
+  .share-icon > :global(:last-child) {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  .share-label > :first-child {
+    text-align: center;
+  }
+
+  .swapped > :first-child,
+  .swapped > :global(:first-child) {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  .swapped > :last-child,
+  .swapped > :global(:last-child) {
+    opacity: 1;
+    transform: none;
+  }
+
+  .share-icon > :global(:last-child) {
+    color: var(--good);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .share-icon > :global(*),
+    .share-label > * {
+      transform: none !important;
+    }
   }
 
   .group {
