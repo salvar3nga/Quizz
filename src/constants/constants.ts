@@ -42,7 +42,7 @@ export const FINAL_MESSAGES: FinalMessages = {
   ],
   [FinalMessageKey.TWENTY]: [
     "You got a few! The rest are still hiding.",
-    "20% – Not the worst, but not brag-worthy either.",
+    "Not the worst, but not brag-worthy either.",
     "You’re warming up. Next time, go for the gold.",
     "You answered more than my cat would 🐱",
     "Hey, at least you didn’t get zero!",
@@ -51,7 +51,7 @@ export const FINAL_MESSAGES: FinalMessages = {
     "You’re on the scoreboard, but the crowd is silent.",
     "You’re not last, but you’re not first either.",
     "The quiz gave you a few freebies.",
-    "You you were my opponent, I know I wouldn't have to worry much",
+    "If you were my opponent, I wouldn't have to worry much.",
   ],
   [FinalMessageKey.FIFTY]: [
     "You could flip a coin and do just as well.",

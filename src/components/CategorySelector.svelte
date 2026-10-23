@@ -30,8 +30,9 @@
   }));
 
   const allCount = CATEGORIES_TO_INCLUDE_ON_ALL_CATEGORIES.reduce(
-    (sum, category) => sum + countFor(category, MAX_QUESTIONS_IN_ALL_CATEGORIES),
-    0
+    (sum, category) =>
+      sum + countFor(category, MAX_QUESTIONS_IN_ALL_CATEGORIES),
+    0,
   );
 
   function onCategorySelect(category: Category) {
@@ -42,7 +43,10 @@
 <section class="home">
   <div class="intro">
     <h1 class="display">Pick your poison.</h1>
-    <p>Tap it, type it, or name what's in the picture. A verdict waits at the end.</p>
+    <p>
+      Tap it, type it, or name what's in the picture. A verdict waits at the
+      end.
+    </p>
   </div>
 
   <div class="grid">
@@ -205,6 +209,36 @@
   .bring-it-on-meta {
     font-size: 15px;
     font-weight: 500;
+  }
+
+  @media (max-width: 600px) {
+    .intro {
+      padding: 12px 0 4px;
+    }
+
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .category {
+      gap: 12px;
+      min-height: 0;
+      padding: 14px;
+    }
+
+    .category-arrow {
+      display: none;
+    }
+
+    .category-name {
+      font-size: 16px;
+      line-height: 1.3;
+    }
+
+    .bring-it-on {
+      padding: 16px;
+    }
   }
 
   @media (hover: hover) and (pointer: fine) {

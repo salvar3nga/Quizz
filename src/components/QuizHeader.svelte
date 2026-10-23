@@ -1,16 +1,46 @@
 <script lang="ts">
-  import { currentCategory, score, resetGame } from "../store/quizStore";
+  import { onDestroy } from "svelte";
+  import {
+    currentCategory,
+    score,
+    answers,
+    resetGame,
+  } from "../store/quizStore";
   import Progress from "./Progress.svelte";
   import Icon from "./Icon.svelte";
 
+  const CONFIRM_QUIT_AFTER = 3;
+  const CONFIRM_WINDOW_IN_MS = 3000;
+
+  let confirmingQuit = false;
+  let confirmTimeout: ReturnType<typeof setTimeout> | undefined;
+
   $: isTimed = $currentCategory === "All";
+
+  function onQuit() {
+    if (confirmingQuit || $answers.length < CONFIRM_QUIT_AFTER) {
+      resetGame();
+      return;
+    }
+    confirmingQuit = true;
+    confirmTimeout = setTimeout(
+      () => (confirmingQuit = false),
+      CONFIRM_WINDOW_IN_MS,
+    );
+  }
+
+  onDestroy(() => clearTimeout(confirmTimeout));
 </script>
 
 <header class="quiz-header">
   <div class="row">
-    <button class="btn-quiet press quit" on:click={resetGame}>
+    <button
+      class="btn-quiet press quit"
+      class:confirming={confirmingQuit}
+      on:click={onQuit}
+    >
       <Icon name="close" size={18} />
-      Quit
+      <span aria-live="polite">{confirmingQuit ? "Leave round?" : "Quit"}</span>
     </button>
 
     <div class="category">
@@ -23,7 +53,9 @@
     </div>
 
     <span class="chip" aria-label="{$score} correct so far">
-      <span class="score-icon"><Icon name="check" size={14} strokeWidth={2.5} /></span>
+      <span class="score-icon"
+        ><Icon name="check" size={14} strokeWidth={2.5} /></span
+      >
       {$score}
     </span>
   </div>
@@ -47,6 +79,13 @@
 
   .quit {
     margin-left: -12px;
+    white-space: nowrap;
+  }
+
+  .quit.confirming,
+  .quit.confirming:hover {
+    color: var(--bad);
+    background: var(--bad-bg);
   }
 
   .category {

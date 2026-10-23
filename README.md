@@ -25,7 +25,7 @@ Many thanks.
 - **Randomized**:
   - Question order
   - Multiple choice options
-- **Auto-advance** after answering
+- **Instant feedback** after answering, then continue with Next or Enter
 - **Detailed report** after quiz:
   - Shows what you answered
   - Shows correct answer

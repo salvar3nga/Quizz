@@ -28,6 +28,11 @@
   $: question = $currentQuestions[$currentIndex];
   $: isTimed = $currentCategory === "All";
   $: isLast = $currentIndex + 1 >= $currentQuestions.length;
+
+  $: upcoming = $currentQuestions[$currentIndex + 1];
+  $: if (upcoming?.type === "image" && upcoming.imageUrl) {
+    new Image().src = upcoming.imageUrl;
+  }
   $: lastAnswer = $revealed ? $answers[$answers.length - 1] : null;
   $: status = !lastAnswer
     ? null
@@ -42,7 +47,7 @@
     selected = selectedAnswer;
     submitAnswer(
       question.options![selectedAnswer],
-      String(selectedAnswer) === question.answer
+      String(selectedAnswer) === question.answer,
     );
   }
 
@@ -69,7 +74,11 @@
     if ($revealed || question?.type !== "mcq") return;
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const option = Number(e.key);
-    if (Number.isInteger(option) && option >= 1 && option <= question.options!.length) {
+    if (
+      Number.isInteger(option) &&
+      option >= 1 &&
+      option <= question.options!.length
+    ) {
       checkMcAnswer(option - 1);
     }
   }
@@ -98,14 +107,18 @@
           {#if isTimed}
             <span
               class="seconds"
-              class:low-time={$timeLeft <= LOW_TIME_WARNING_THRESHOLD_IN_SECONDS}
-              >{$timeLeft}s</span
+              class:low-time={$timeLeft <=
+                LOW_TIME_WARNING_THRESHOLD_IN_SECONDS}>{$timeLeft}s</span
             >
           {/if}
         </div>
 
         {#if question.type === "image"}
-          <img src={question.imageUrl} alt="What this question asks about" class="image" />
+          <img
+            src={question.imageUrl}
+            alt="What this question asks about"
+            class="image"
+          />
         {/if}
 
         <h2 class="display title">{question.question}</h2>
@@ -123,9 +136,13 @@
                 on:click={() => checkMcAnswer(i)}
               >
                 {#if $revealed && isAnswer}
-                  <span class="mark mark-good"><Icon name="check" size={14} strokeWidth={2.5} /></span>
+                  <span class="mark mark-good"
+                    ><Icon name="check" size={14} strokeWidth={2.5} /></span
+                  >
                 {:else if $revealed && selected === i}
-                  <span class="mark mark-bad"><Icon name="close" size={14} strokeWidth={2.5} /></span>
+                  <span class="mark mark-bad"
+                    ><Icon name="close" size={14} strokeWidth={2.5} /></span
+                  >
                 {:else}
                   <span class="kbd">{i + 1}</span>
                 {/if}
@@ -134,23 +151,41 @@
             {/each}
           </div>
           {#if !$revealed}
-            <span class="hint">Press 1 to {question.options!.length} to answer</span>
+            <span class="hint"
+              >Press 1 to {question.options!.length} to answer</span
+            >
           {/if}
         {:else}
           <Input
             bind:this={input}
             bind:typedAnswer={userInput}
             disabled={$revealed}
-            status={status === "correct" ? "correct" : status ? "incorrect" : null}
+            status={status === "correct"
+              ? "correct"
+              : status
+                ? "incorrect"
+                : null}
             onCheckAnswer={checkTypedAnswer}
           />
         {/if}
 
         {#if status}
           <div class="reveal">
-            <div class="result" class:result-correct={status === "correct"} role="status">
-              <span class="mark mark-lg" class:mark-good={status === "correct"} class:mark-bad={status !== "correct"}>
-                <Icon name={status === "correct" ? "check" : "close"} size={16} strokeWidth={2.5} />
+            <div
+              class="result"
+              class:result-correct={status === "correct"}
+              role="status"
+            >
+              <span
+                class="mark mark-lg"
+                class:mark-good={status === "correct"}
+                class:mark-bad={status !== "correct"}
+              >
+                <Icon
+                  name={status === "correct" ? "check" : "close"}
+                  size={16}
+                  strokeWidth={2.5}
+                />
               </span>
               <span class="result-text">
                 <strong>
@@ -161,15 +196,22 @@
                       : "Not quite."}
                 </strong>
                 {#if status !== "correct" && question.type !== "mcq"}
-                  <span class="result-answer">Answer: <strong>{getCorrectAnswer(question)}</strong></span>
+                  <span class="result-answer"
+                    >Answer: <strong>{getCorrectAnswer(question)}</strong></span
+                  >
                 {/if}
               </span>
             </div>
-            <button class="btn btn-accent press" use:focusOnMount on:click={goToNextQuestion}>
+            <button
+              class="btn btn-accent press next"
+              use:focusOnMount
+              on:click={goToNextQuestion}
+            >
               {isLast ? "See results" : "Next"}
               <span class="kbd" aria-hidden="true">↵</span>
             </button>
           </div>
+          <div class="reveal-spacer"></div>
         {/if}
       </div>
     {/key}
@@ -305,6 +347,41 @@
     font-size: 14px;
   }
 
+  .reveal-spacer {
+    display: none;
+  }
+
+  @media (max-width: 600px) {
+    .reveal {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10;
+      padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+      border-top: 1px solid var(--line);
+      background: var(--card);
+      box-shadow: 0 -12px 32px -16px rgba(21, 23, 28, 0.25);
+      animation: slide-up 280ms var(--ease-out) both;
+    }
+
+    .next {
+      flex: 1 0 auto;
+    }
+
+    .reveal-spacer {
+      display: block;
+      height: 140px;
+      margin-top: -24px;
+    }
+  }
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+    }
+  }
+
   @media (hover: hover) and (pointer: fine) {
     .option:not(:disabled):hover {
       border-color: var(--ink);
@@ -319,7 +396,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .result {
+    .result,
+    .reveal {
       animation-name: fade;
     }
   }
