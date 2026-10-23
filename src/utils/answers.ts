@@ -1,7 +1,7 @@
 import type { Question } from "@/constants/question";
 
 // "  Leonardo  DA Vínci " -> "leonardo da vinci"
-function normalize(value: string): string {
+export function normalize(value: string): string {
   return value
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")

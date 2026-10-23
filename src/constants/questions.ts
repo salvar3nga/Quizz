@@ -22,12 +22,7 @@ export const questions: Question[] = [
     type: "image",
     category: "General Knowledge",
     question: "Name the food!",
-    answer: [
-      "Kaiserschmarrn",
-      "Kaiserschmarren",
-      "Kaiserschmarrn",
-      "Kaiserschmarrn",
-    ],
+    answer: ["Kaiserschmarrn", "Kaiserschmarren"],
     imageUrl: "./food/kaiserschmarrn.jpg",
   },
   {
@@ -286,13 +281,13 @@ export const questions: Question[] = [
     type: "text",
     category: "Science",
     question: "What is the chemical formula for water?",
-    answer: ["H2O", "h2o"],
+    answer: ["H2O"],
   },
   {
     type: "text",
     category: "Science",
     question: "What is the process by which green plants make their food?",
-    answer: ["Photosynthesis", "photosynthesis"],
+    answer: ["Photosynthesis"],
   },
   {
     type: "text",
@@ -404,13 +399,13 @@ export const questions: Question[] = [
     type: "text",
     category: "Science",
     question: "What is the chemical formula for table salt?",
-    answer: ["NaCl", "nacl"],
+    answer: ["NaCl"],
   },
   {
     type: "text",
     category: "Science",
     question: "What is the unit of electrical resistance?",
-    answer: ["Ohm", "ohm"],
+    answer: ["Ohm"],
   },
   // ######## HISTORY ######## //
   {
@@ -635,7 +630,7 @@ export const questions: Question[] = [
     type: "image",
     category: "History",
     question: "Who is on the photo?",
-    answer: ["Amílcar Cabral", "Amilcar Cabral", "Amilcar", "Cabral"],
+    answer: ["Amílcar Cabral", "Amilcar", "Cabral"],
     imageUrl: "./people/amilcar.jpg",
   },
   {
@@ -776,7 +771,7 @@ export const questions: Question[] = [
     type: "text",
     category: "Geography",
     question: "What is the capital city of Brazil?",
-    answer: ["Brasília", "Brasilia"],
+    answer: ["Brasília"],
   },
   {
     type: "text",
@@ -1115,13 +1110,6 @@ export const questions: Question[] = [
     question: "Name the city!",
     answer: ["Monaco", "Monte Carlo"],
     imageUrl: "./cities/Monaco.jpg",
-  },
-  {
-    type: "image",
-    category: "Geography",
-    question: "Name the city!",
-    answer: ["Porto", "Oporto"],
-    imageUrl: "./cities/Porto.jpg",
   },
 
   // ######## SPORTS ######## //
