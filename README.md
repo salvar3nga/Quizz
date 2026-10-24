@@ -1,77 +1,81 @@
 # 🧠 Quizz Mei
 
-A quiz application built with **Vite + Svelte + TypeScript**.  
-Running on: https://salvar3nga.github.io/Quizz/ it supports multiple categories, randomized questions, timers, text-input answers, and image-based questions.
+A fast, friendly quiz app with multiple categories, a countdown mode, image questions and shareable results.
 
----
+**[▶️ Play it here](https://salvar3nga.github.io/Quizz/)**
 
-## Enjoyed this project?
+![Quizz Mei preview](public/og.png)
 
-If you had fun or found this quiz useful, please consider leaving a ⭐ on the repository! Your support motivates further development.
-
-Many thanks.
+Built with **Svelte 5 + Vite + TypeScript**.
 
 ---
 
 ## ✨ Features
 
-- Current quiz categories: **General Knowledge**, **Geography**, **History**, **Science**
-- **Play single category** or **Play all categories** (5 random questions per category)
-- Question types:
+- **Categories**: General Knowledge, Geography, History, Science, Sports and IT
+- **Play a single category** or **"I want 'em all!"**: 5 random questions from each category, against the clock
+- **Question types**
   - ✅ Multiple choice
   - ✍️ Text input (typed answer)
-  - 🖼️ Image-based (guess country, city, flag)
-- **Countdown timer** only on "I want 'em all!" category
-- **Randomized**:
-  - Question order
-  - Multiple choice options
-- **Instant feedback** after answering, then continue with Next or Enter
-- **Detailed report** after quiz:
-  - Shows what you answered
-  - Shows correct answer
-  - Highlights correct/incorrect answers
+  - 🖼️ Image-based (guess the country, city, flag, person, dish…)
+- **Countdown timer** in the "all categories" mode, with a warning when time is running low
+- **Randomized** question order and multiple choice options
+- **Instant feedback** after each answer, then continue with Next or Enter
+- **Detailed report** at the end: what you answered, the correct answer, and what you got right or wrong
+- **Best scores** saved per category in your browser
+- **Share your result**: copy it to the clipboard or use the native share sheet
+- **Challenge a friend**: shared links open the same category, so they can try to beat your score
+- 🎉 Confetti for a good run
 
 ---
 
-## 🐞 Found a bug, have a feature request or an answer is incorrect?
-
-If you discover a bug or have an idea for a new feature, please open an issue on the [GitHub Issues page](https://github.com/salvar3nga/Quizz/issues).
-
-- Describe the bug or feature clearly
-- Include steps to reproduce (if reporting a bug)
-- Screenshots or extra details are welcome!
-
-## Your feedback helps make this quiz better for everyone!
-
-## 🚀 Getting Started
-
-### 1. Clone the repository
+## 🚀 Getting started
 
 ```bash
 git clone https://github.com/salvar3nga/Quizz.git
-
-cd quizz
-```
-
-### 2. Install dependencies and run Project
-
-```bash
+cd Quizz
 pnpm install
 pnpm run dev
 ```
 
-Project will run on
+The app runs on <http://localhost:5173/Quizz/>.
 
-```bash
-http://localhost:5173/
-```
+### Scripts
+
+| Command            | What it does                              |
+| ------------------ | ----------------------------------------- |
+| `pnpm run dev`     | Start the dev server                      |
+| `pnpm run build`   | Production build into `dist/`             |
+| `pnpm run preview` | Serve the production build locally        |
+| `pnpm run check`   | Type-check Svelte and TypeScript          |
+| `pnpm run test`    | Run the unit tests (Vitest)               |
 
 ---
 
-### 3. Configuring it to your liking
+## 🛠️ Configuring it to your liking
 
-### The `constants.ts` file
+Everything you're likely to tweak lives in [`src/constants/`](src/constants):
 
-This file contains important configuration such as the total timer duration, which categories to include and message arrays used throughout the app, such as the final messages shown to users at the end of a quiz. You can customize these to your liking and need.
+- [`constants.ts`](src/constants/constants.ts): timer duration, questions per category, the low-time warning threshold, which categories can be played and which are included in "all", plus the arrays of end-of-quiz messages
+- [`questions.ts`](src/constants/questions.ts): the questions themselves
+- Images for image questions go in [`public/`](public)
 
 Happy configuring ;)
+
+---
+
+## 🐞 Found a bug, a feature idea, or a wrong answer?
+
+Please open an issue on the [GitHub Issues page](https://github.com/salvar3nga/Quizz/issues).
+
+- Describe the bug or idea clearly
+- Include steps to reproduce (for bugs)
+- Screenshots or extra details are welcome!
+
+Your feedback helps make this quiz better for everyone.
+
+---
+
+## ⭐ Enjoyed this project?
+
+If you had fun or found the quiz useful, consider leaving a star on the repository. It really motivates further development. Many thanks!
